@@ -1,0 +1,750 @@
+/* Chiron · Главная сотрудника · Desktop (Figma: Dark 239:7913, Light 228:4162)
+   All colours come from tokens. Values that the mockups bind to primitives or raw
+   colours (stack, lesson shadow, illustration) are page variables: light values
+   below, dark overrides in `.employee-home[data-theme='dark']`. The page always
+   carries its own data-theme. */
+
+.employee-home {
+  /* Background decoration */
+  --eh-blob-sky: var(--color-decoration-blob-sky);
+  --eh-blob-indigo: var(--color-decoration-blob-indigo);
+  --eh-blob-light: var(--color-decoration-blob-light);
+  /* Cobalt glows: cobalt/500 at 10% in Figma, boosted to 15% */
+  --eh-glow-cobalt: var(--cobalt-500);
+  /* Blob intensity: ~1.5× the mockup values (0.3 / 0.2 / 0.1 / 0.1), so the
+     colours read as vivid in the browser as in Figma */
+  --eh-blob-sky-opacity: 0.45;
+  --eh-blob-light-opacity: 0.3;
+  --eh-blob-indigo-opacity: 0.16;
+  --eh-glow-opacity: 0.15;
+
+  /* Hero card: always sits on a dark photo, so its content uses inverse colours */
+  --eh-hero-text: var(--color-text-inverse);
+  --eh-hero-icon: var(--color-icon-inverse);
+  /* Stack layers (light: Figma 232:7429 / 232:7427) */
+  --eh-stack-1: var(--cobalt-700);
+  --eh-stack-1-border: var(--color-border-highlight);
+  --eh-stack-2: var(--cobalt-300);
+
+  /* Lesson card shadow (light: Figma 228:4240) */
+  --eh-lesson-shadow:
+    0 24px 24px var(--color-shadow-raised),
+    0 8px 8px var(--color-shadow-raised),
+    0 1px 1px var(--color-shadow-subtle);
+  /* Raised (hover): the shadow drops further and spreads wider */
+  --eh-lesson-shadow-raised:
+    0 32px 32px var(--color-shadow-raised),
+    0 12px 12px var(--color-shadow-raised),
+    0 2px 2px var(--color-shadow-subtle);
+  --eh-lesson-lift: 4px;
+
+  /* Lesson illustration (dark only; light uses the tinted image) */
+  --eh-illustration-lines: var(--cobalt-200);
+  --eh-illustration-accent: var(--cobalt-400);
+  --eh-illustration-light: block;
+  --eh-illustration-dark: none;
+
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  overflow: hidden;
+  background: var(--color-bg-canvas);
+  color: var(--color-text-primary);
+}
+
+.employee-home[data-theme='dark'] {
+  /* Stack layers: raw colours in Figma 239:8007 / 239:8008 (no variables yet) */
+  --eh-stack-1: #263d7c;
+  --eh-stack-1-border: transparent;
+  --eh-stack-2: #202854;
+
+  /* Lesson card shadow: raw colours in Figma 239:7996 */
+  --eh-lesson-shadow:
+    0 4px 4px rgba(0, 23, 74, 0.3),
+    0 20px 15px rgba(0, 23, 74, 0.6);
+  --eh-lesson-shadow-raised:
+    0 8px 12px rgba(0, 23, 74, 0.3),
+    0 32px 32px rgba(0, 23, 74, 0.6);
+
+  --eh-illustration-light: none;
+  --eh-illustration-dark: block;
+}
+
+/* Theme switch: a short cross-fade (View Transitions API) */
+::view-transition-old(root),
+::view-transition-new(root) {
+  animation-duration: 0.3s;
+}
+
+/* ---------- Backdrop ---------- */
+
+.employee-home__backdrop {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+}
+
+.eh-blob {
+  position: absolute;
+  border-radius: 50%;
+}
+
+.eh-blob--sky {
+  left: 366px;
+  top: 461px;
+  width: 511px;
+  height: 511px;
+  background: var(--eh-blob-sky);
+  opacity: var(--eh-blob-sky-opacity);
+  filter: blur(200px);
+}
+
+.eh-blob--light {
+  left: 796px;
+  top: -123px;
+  width: 900px;
+  height: 426px;
+  background: var(--eh-blob-light);
+  opacity: var(--eh-blob-light-opacity);
+  filter: blur(200px);
+}
+
+.eh-blob--indigo {
+  left: 789px;
+  top: 836px;
+  width: 1044px;
+  height: 511px;
+  background: var(--eh-blob-indigo);
+  opacity: var(--eh-blob-indigo-opacity);
+  filter: blur(200px);
+}
+
+.eh-blob--halo {
+  left: 223px;
+  top: -170px;
+  width: 1000px;
+  height: 520px;
+  background: var(--eh-glow-cobalt);
+  opacity: var(--eh-glow-opacity);
+  filter: blur(80px);
+}
+
+.eh-blob--glow {
+  left: 343px;
+  top: 78px;
+  width: 620px;
+  height: 300px;
+  background: var(--eh-glow-cobalt);
+  opacity: var(--eh-glow-opacity);
+  filter: blur(95px);
+}
+
+/* ---------- Header ---------- */
+
+.employee-home__top {
+  position: relative;
+  /* Above the workspace, so the profile dropdown is not covered */
+  z-index: 2;
+  padding: var(--space-16) var(--space-16) 0;
+}
+
+/* In the mockup the bar is 1880px wide inside a 1888px area (8px short on the right). */
+.employee-home__header {
+  width: calc(100% - 8px);
+}
+
+/* ---------- Workspace ---------- */
+
+.employee-home__workspace {
+  position: relative;
+  flex: 1 0 auto;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  /* Content starts 110px below the header (90px in the mockup + 20px). */
+  padding-top: calc(90px + var(--space-20));
+  padding-bottom: var(--space-140);
+}
+
+.employee-home__main {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 44px;
+  width: 880px;
+}
+
+/* ---------- Greeting ---------- */
+
+.eh-greeting {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-12);
+  width: 100%;
+}
+
+.eh-greeting__title {
+  width: 736px;
+  margin: 0;
+  /* Mixed line: script name (56/48) + heading (32/40), as in Figma */
+  font-size: 0;
+  line-height: 0;
+  color: var(--color-text-primary);
+}
+
+.eh-greeting__line {
+  display: block;
+}
+
+/* Figma lays the mixed first line out at 51px (block height 91 = 51 + 40) */
+.eh-greeting__line:first-child {
+  height: 51px;
+}
+
+.eh-greeting__name {
+  font-family: 'Fet', cursive;
+  font-weight: 400;
+  font-size: 56px;
+  line-height: 48px;
+  color: var(--color-text-link);
+}
+
+/* «Handwriting» reveal. The padding/negative margin pair enlarges the mask area
+   so swashes that overhang the 48px line are not clipped; layout is unchanged. */
+.eh-greeting__name.is-idle,
+.eh-greeting__name.is-writing {
+  display: inline-block;
+  padding: 0.3em 0.2em;
+  margin: -0.3em -0.2em;
+  -webkit-mask-image: linear-gradient(90deg, #000 47.5%, transparent 52.5%);
+  mask-image: linear-gradient(90deg, #000 47.5%, transparent 52.5%);
+  -webkit-mask-size: 210% 100%;
+  mask-size: 210% 100%;
+  -webkit-mask-repeat: no-repeat;
+  mask-repeat: no-repeat;
+  -webkit-mask-position: 100% 0;
+  mask-position: 100% 0;
+}
+
+.eh-greeting__name.is-writing {
+  animation: eh-handwrite var(--eh-write-duration, 1.4s) cubic-bezier(0.3, 0.1, 0.4, 1) forwards;
+}
+
+@keyframes eh-handwrite {
+  to {
+    -webkit-mask-position: 0 0;
+    mask-position: 0 0;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .eh-greeting__name.is-idle,
+  .eh-greeting__name.is-writing {
+    -webkit-mask-image: none;
+    mask-image: none;
+    animation: none;
+  }
+}
+
+.eh-greeting__space {
+  font-family: var(--font-heading);
+  font-weight: 700;
+  font-size: 32px;
+  line-height: 40px;
+}
+
+.eh-greeting__lead {
+  width: 812px;
+  margin: 0;
+  color: var(--color-text-secondary);
+}
+
+/* ---------- Course hero (card + stack) ---------- */
+
+.eh-course {
+  position: relative;
+  isolation: isolate;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+}
+
+.eh-course__card {
+  position: relative;
+  z-index: 3;
+  width: 100%;
+  height: 445px;
+  /* clip (not hidden): the card must never scroll its content, e.g. on focus */
+  overflow: clip;
+  border-radius: var(--radius-32);
+  background: var(--color-bg-selected);
+  box-shadow: var(--shadow-raised-l);
+  color: var(--eh-hero-text);
+}
+
+.eh-course__layer {
+  position: absolute;
+  height: 445px;
+  border-radius: var(--radius-32);
+}
+
+.eh-course__layer--1 {
+  z-index: 2;
+  left: 24px;
+  top: 14px;
+  width: 832px;
+  border: var(--stroke-1) solid var(--eh-stack-1-border);
+  background: var(--eh-stack-1);
+  box-shadow: var(--shadow-stack-1);
+}
+
+.eh-course__layer--2 {
+  z-index: 1;
+  left: 48px;
+  top: 24px;
+  width: 784px;
+  background: var(--eh-stack-2);
+  box-shadow: var(--shadow-stack-2);
+}
+
+/* Media (offsets from the card edge) */
+.eh-course__media {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+}
+
+.eh-course__image {
+  position: absolute;
+  display: block;
+  max-width: none;
+}
+
+.eh-course__image--13 {
+  left: -22px;
+  top: -4px;
+  width: 758px;
+  height: 379px;
+  object-fit: cover;
+}
+
+.eh-course__image--31 {
+  left: -4px;
+  top: -34px;
+  width: 884px;
+  height: 590px;
+}
+
+.eh-course__image--31 img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.eh-course__scrim {
+  position: absolute;
+  inset: 0;
+  background: var(--color-bg-scrim-soft);
+}
+
+/* The glow box overhangs the card by 200px on every side (clipped by the card),
+   so it can drift without showing an edge. The gradient centre is shifted by the
+   same 200px, so the static picture is exactly the Figma one. */
+.eh-course__glow {
+  position: absolute;
+  left: -200px;
+  top: -200px;
+  width: calc(880px + 400px);
+  height: calc(445px + 400px);
+  mix-blend-mode: screen;
+  background: radial-gradient(
+    484.05px 400.18px at calc(721.23px + 200px) calc(466.61px + 200px),
+    var(--color-decoration-hero-glow-strong) 0%,
+    var(--color-decoration-hero-glow-mid) 55%,
+    var(--color-decoration-hero-glow-none) 100%
+  );
+}
+
+/* Status: category tag + lessons count */
+.eh-course__status {
+  position: absolute;
+  left: var(--space-40);
+  right: var(--space-40);
+  top: var(--space-24);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-10);
+}
+
+.eh-course__meta {
+  text-align: right;
+}
+
+.eh-course__category {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-10);
+  border-radius: var(--radius-999);
+  white-space: nowrap;
+}
+
+.eh-course__category-icon {
+  display: inline-flex;
+  padding: var(--space-6);
+  border-radius: var(--radius-8);
+  background: var(--color-bg-inverse);
+}
+
+.eh-course__category-glyph {
+  position: relative;
+  width: 16px;
+  height: 16px;
+  overflow: hidden;
+}
+
+.eh-course__category-glyph img {
+  position: absolute;
+  left: 1px;
+  top: 2.389px;
+  display: block;
+}
+
+/* Deadline + duration */
+.eh-course__details {
+  position: absolute;
+  left: var(--space-40);
+  top: 163px;
+  display: flex;
+  align-items: center;
+  gap: var(--space-12);
+  width: 333px;
+  white-space: nowrap;
+}
+
+.eh-course__detail {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-4);
+}
+
+.eh-course__dot {
+  display: block;
+  flex: none;
+}
+
+/* Title, description, rewards */
+.eh-course__name {
+  position: absolute;
+  left: var(--space-40);
+  top: 205px;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: var(--space-12);
+  width: 376px;
+}
+
+.eh-course__title,
+.eh-course__description {
+  margin: 0;
+  color: var(--eh-hero-text);
+}
+
+.eh-course__rewards {
+  display: flex;
+  align-items: center;
+  gap: var(--space-6);
+  padding-top: var(--space-12);
+}
+
+/* ---------- Lesson card ---------- */
+
+.eh-lesson {
+  position: absolute;
+  right: var(--space-40);
+  top: 65px;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-20);
+  width: 240px;
+  height: 340px;
+  padding: var(--space-20);
+  border-radius: var(--radius-24);
+  background: var(--color-bg-surface);
+  box-shadow: var(--eh-lesson-shadow);
+  color: var(--color-text-primary);
+  transition:
+    transform 0.5s cubic-bezier(0.25, 0.1, 0.25, 1),
+    box-shadow 0.5s cubic-bezier(0.25, 0.1, 0.25, 1);
+}
+
+/* Lift on hover (and when the button inside has keyboard focus) */
+.eh-lesson:hover,
+.eh-lesson:has(:focus-visible) {
+  transform: translateY(calc(-1 * var(--eh-lesson-lift)));
+  box-shadow: var(--eh-lesson-shadow-raised);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .eh-lesson {
+    transition: none;
+  }
+}
+
+.eh-lesson__illustration {
+  position: relative;
+  flex: none;
+  height: 120px;
+  overflow: hidden;
+  border-radius: var(--radius-12);
+}
+
+/* The laptop drawing is a mask; the colour comes from the token. */
+.eh-lesson__lines,
+.eh-lesson__sparks {
+  display: var(--eh-illustration-dark);
+}
+
+.eh-lesson__lines,
+.eh-lesson__sparks-fill {
+  position: absolute;
+  width: 129px;
+  height: 117px;
+  -webkit-mask: var(--eh-mask) no-repeat 0 0 / 129px 117px;
+  mask: var(--eh-mask) no-repeat 0 0 / 129px 117px;
+}
+
+.eh-lesson__lines {
+  left: 38px;
+  top: 0;
+  background: var(--eh-illustration-lines);
+}
+
+.eh-lesson__sparks {
+  position: absolute;
+  left: 64px;
+  top: 6px;
+  width: 32px;
+  height: 22px;
+  overflow: hidden;
+}
+
+.eh-lesson__sparks-fill {
+  left: -26px;
+  top: -6px;
+  background: var(--eh-illustration-accent);
+}
+
+/* Light: the line-art image (opacity 0.8) with cobalt tints in «lighten» mode.
+   Lighten keeps the white card white and paints the dark lines with the tint. */
+.eh-lesson__art-light {
+  display: var(--eh-illustration-light);
+}
+
+.eh-lesson__art-light-image {
+  position: absolute;
+  left: 33px;
+  top: 5.68px;
+  width: 134px;
+  height: 108.649px;
+  overflow: hidden;
+  opacity: 0.8;
+}
+
+.eh-lesson__art-light-image img {
+  position: absolute;
+  left: 0;
+  top: -6.74%;
+  width: 190%;
+  height: 234.83%;
+  max-width: none;
+}
+
+.eh-lesson__tint {
+  position: absolute;
+  mix-blend-mode: lighten;
+}
+
+.eh-lesson__tint--lines {
+  left: 33px;
+  top: 5.68px;
+  width: 134px;
+  height: 108.649px;
+  background: var(--cobalt-900);
+}
+
+.eh-lesson__tint--sparks {
+  left: 71.93px;
+  top: 7.49px;
+  width: 19.919px;
+  height: 15.392px;
+  background: var(--cobalt-500);
+}
+
+.eh-lesson__tint--cursor {
+  left: 113.58px;
+  top: 69.05px;
+  width: 23.541px;
+  height: 19.919px;
+  background: var(--cobalt-500);
+}
+
+.eh-lesson__title {
+  display: flex;
+  flex: 1 0 0;
+  flex-direction: column;
+  justify-content: flex-end;
+  gap: var(--space-8);
+  min-height: 1px;
+}
+
+.eh-lesson__overline {
+  margin: 0;
+  color: var(--color-text-secondary);
+  text-transform: uppercase;
+}
+
+.eh-lesson__heading {
+  margin: 0;
+  color: var(--color-text-primary);
+}
+
+/* ---------- Entrance: course card stack ----------
+   On page open the top card rises 10px into place while the two stack layers
+   slide out from under it, shrinking by 8px on each side to their final size.
+   Layers start aligned with the card's starting top edge, so they are hidden.
+   Each card has its own speed: the deeper the layer, the longer it travels. */
+
+.employee-home {
+  --eh-card-enter-duration: 700ms;
+  --eh-layer-1-enter-duration: 1000ms;
+  --eh-layer-2-enter-duration: 1300ms;
+  --eh-stack-enter-delay: 300ms;
+  --eh-stack-enter-ease: cubic-bezier(0.33, 1, 0.68, 1);
+  --eh-stack-enter-rise: 10px;
+  --eh-stack-enter-spread: 8px;
+}
+
+.eh-course__card,
+.eh-course__layer {
+  animation-delay: var(--eh-stack-enter-delay);
+  animation-timing-function: var(--eh-stack-enter-ease);
+  animation-fill-mode: both;
+}
+
+.eh-course__card {
+  animation-name: eh-card-rise;
+  animation-duration: var(--eh-card-enter-duration);
+}
+
+.eh-course__layer--1 {
+  animation-name: eh-stack-layer-1;
+  animation-duration: var(--eh-layer-1-enter-duration);
+}
+
+.eh-course__layer--2 {
+  animation-name: eh-stack-layer-2;
+  animation-duration: var(--eh-layer-2-enter-duration);
+}
+
+@keyframes eh-card-rise {
+  from {
+    transform: translateY(var(--eh-stack-enter-rise));
+  }
+}
+
+@keyframes eh-stack-layer-1 {
+  from {
+    top: var(--eh-stack-enter-rise);
+    left: calc(24px - var(--eh-stack-enter-spread));
+    width: calc(832px + 2 * var(--eh-stack-enter-spread));
+  }
+}
+
+@keyframes eh-stack-layer-2 {
+  from {
+    top: var(--eh-stack-enter-rise);
+    left: calc(48px - var(--eh-stack-enter-spread));
+    width: calc(784px + 2 * var(--eh-stack-enter-spread));
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .eh-course__card,
+  .eh-course__layer {
+    animation: none;
+  }
+}
+
+/* ---------- Animated background (course card) ----------
+   Opt-in via `animatedBackground`. The photo layer drifts (moves, scales,
+   tilts) while the glow wanders on a different, non-matching cycle, so the
+   gradient slowly «flows» without visibly repeating. (image 13 is fully covered
+   by the opaque image 31 — in the mockup too — so it is not animated.) Only transforms are
+   animated (GPU-composited). To roll back: animatedBackground={false},
+   or delete this block (a copy of the static version is in backups/). */
+
+.employee-home {
+  --eh-bg-drift-31: 8s;
+  --eh-bg-glow-wander: 10.3s;
+}
+
+.eh-course__card--animated-bg .eh-course__image--31,
+.eh-course__card--animated-bg .eh-course__glow {
+  animation-timing-function: ease-in-out;
+  animation-iteration-count: infinite;
+  animation-direction: alternate;
+  will-change: transform;
+}
+
+.eh-course__card--animated-bg .eh-course__image--31 {
+  animation-name: eh-bg-drift-31;
+  animation-duration: var(--eh-bg-drift-31);
+}
+
+.eh-course__card--animated-bg .eh-course__glow {
+  animation-name: eh-bg-glow-wander;
+  animation-duration: var(--eh-bg-glow-wander);
+}
+
+.eh-course__card--animated-bg.is-offscreen .eh-course__image--31,
+.eh-course__card--animated-bg.is-offscreen .eh-course__glow {
+  animation-play-state: paused;
+}
+
+/* Scale ≥ 1.18 keeps the photo edges outside the card at every frame. */
+@keyframes eh-bg-drift-31 {
+  0% {
+    transform: scale(1.18) translate(0, 0) rotate(0deg);
+  }
+  50% {
+    transform: scale(1.26) translate(-40px, 18px) rotate(-4deg);
+  }
+  100% {
+    transform: scale(1.18) translate(36px, -22px) rotate(3.5deg);
+  }
+}
+
+@keyframes eh-bg-glow-wander {
+  0% {
+    transform: translate(0, 0);
+  }
+  50% {
+    transform: translate(-160px, -50px) scale(1.15);
+  }
+  100% {
+    transform: translate(80px, -110px) scale(0.9);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .eh-course__card--animated-bg .eh-course__image--31,
+  .eh-course__card--animated-bg .eh-course__glow {
+    animation: none;
+  }
+}

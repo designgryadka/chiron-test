@@ -1,0 +1,8 @@
+/* Fet — handwritten accent font for the user's name in the greeting.
+   Licensed font, bundled from ./fonts (the installed system copy is used first if present). */
+@font-face {
+  font-family: 'Fet';
+  font-weight: 400;
+  font-display: swap;
+  src: local('Fet Regular'), local('Fet-Regular'), local('Fet'), url('./fonts/Fet-Regular.ttf') format('truetype');
+}

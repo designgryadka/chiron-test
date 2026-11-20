@@ -1,0 +1,68 @@
+/* Button / Primary — states: default, hover, active (pressed), focus, disabled */
+.chiron-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-8);
+  height: 44px;
+  padding: 0 var(--space-20);
+  border: 0;
+  border-radius: var(--radius-999);
+  background: var(--color-bg-brand);
+  color: var(--color-text-on-brand);
+  font-family: var(--font-body);
+  font-weight: 500;
+  font-size: 14px;
+  line-height: 20px;
+  cursor: pointer;
+  user-select: none;
+  transition: background-color 0.15s ease-out, transform 0.1s ease-out;
+}
+
+.chiron-button--full {
+  display: flex;
+  width: 100%;
+}
+
+.chiron-button:hover:not(:disabled),
+.chiron-button.is-hover {
+  background: var(--color-bg-brand-hover);
+}
+
+.chiron-button:active:not(:disabled),
+.chiron-button.is-active {
+  background: var(--color-bg-brand-pressed);
+}
+
+/* Focus ring: 2px ring, 2px away from the button (matches the Figma Focus variant) */
+.chiron-button:focus-visible,
+.chiron-button.is-focus {
+  outline: var(--stroke-2) solid var(--color-border-focus);
+  outline-offset: 2px;
+}
+
+.chiron-button:disabled {
+  background: var(--color-bg-brand-disabled);
+  cursor: not-allowed;
+}
+
+.chiron-button__label {
+  white-space: nowrap;
+}
+
+/* Arrow slides 10px to the right on hover (into the button's side padding) */
+.chiron-button__arrow {
+  flex: none;
+  transition: transform 0.25s cubic-bezier(0.33, 1, 0.68, 1);
+}
+
+.chiron-button:hover:not(:disabled) .chiron-button__arrow,
+.chiron-button.is-hover .chiron-button__arrow {
+  transform: translateX(10px);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .chiron-button__arrow {
+    transition: none;
+  }
+}

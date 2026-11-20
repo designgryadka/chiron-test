@@ -1,0 +1,156 @@
+/* Header (glass bar) + Nav item (default / hover / active)
+   Per theme: Light — white pill, Dark — pill over black 30%.
+   The values are declared on the theme element itself, so the nearest
+   [data-theme] wins (a page can switch theme inside a differently themed host). */
+:root,
+[data-theme='light'] {
+  --chiron-header-bg: var(--color-bg-surface);
+  /* No visible outline; the border stays transparent so the geometry is the same */
+  --chiron-header-border: transparent;
+  /* Softer, wider shadow than in the dark theme */
+  --chiron-header-shadow: 0 12px 32px -8px var(--color-shadow-raised), 0 2px 6px var(--color-shadow-subtle);
+}
+
+[data-theme='dark'] {
+  --chiron-header-bg: var(--alpha-black-30);
+  --chiron-header-border: var(--color-border-default);
+  --chiron-header-shadow: 0 8px 12px var(--color-shadow-raised), 0 1px 1px var(--color-shadow-subtle);
+}
+
+.chiron-header {
+
+  position: relative;
+  display: grid;
+  grid-template-columns: 1fr auto 1fr;
+  align-items: center;
+  width: 100%;
+  min-width: 960px;
+  height: 62px;
+  /* Figma measures from the outer edge: logo at 24px, profile at 12px, the 1px border included. */
+  padding: 0 calc(var(--space-12) - var(--stroke-1)) 0 calc(var(--space-24) - var(--stroke-1));
+  border: var(--stroke-1) solid var(--chiron-header-border);
+  border-radius: var(--radius-999);
+  background: var(--chiron-header-bg);
+  -webkit-backdrop-filter: blur(14px);
+  backdrop-filter: blur(14px);
+  box-shadow: var(--chiron-header-shadow);
+  color: var(--color-text-primary);
+}
+
+.chiron-header__logo {
+  justify-self: start;
+  color: var(--color-text-primary);
+  text-decoration: none;
+}
+
+/* The menu is centred on the bar itself, not between the logo and the profile. */
+.chiron-header__nav {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  display: flex;
+  align-items: center;
+  gap: var(--space-4);
+}
+
+.chiron-header__profile {
+  grid-column: 3;
+  justify-self: end;
+  display: flex;
+  align-items: center;
+  gap: var(--space-9);
+}
+
+/* Nav item */
+.chiron-nav-item {
+  display: inline-flex;
+  align-items: center;
+  padding: var(--space-12) var(--space-16);
+  border: 0;
+  border-radius: var(--radius-999);
+  background: transparent;
+  color: var(--color-text-primary);
+  font-family: var(--font-body);
+  font-weight: 500;
+  font-size: 15px;
+  line-height: 19px;
+  white-space: nowrap;
+  cursor: pointer;
+  transition: background-color 0.15s ease-out, color 0.15s ease-out;
+}
+
+.chiron-nav-item:hover,
+.chiron-nav-item.is-hover {
+  background: var(--color-bg-hover);
+}
+
+.chiron-nav-item:active {
+  background: var(--color-bg-pressed);
+}
+
+.chiron-nav-item:focus-visible {
+  outline: var(--stroke-2) solid var(--color-border-focus);
+  outline-offset: 2px;
+}
+
+.chiron-nav-item.is-active {
+  background: var(--color-bg-selected);
+  color: var(--color-text-on-selected);
+}
+
+.chiron-nav-item.is-active:hover {
+  background: var(--color-bg-selected-hover);
+}
+
+
+/* Profile menu (avatar button + dropdown) */
+.chiron-header__account {
+  position: relative;
+  display: flex;
+}
+
+.chiron-header__avatar-button {
+  display: flex;
+  padding: 0;
+  border: 0;
+  border-radius: var(--radius-999);
+  background: none;
+  cursor: pointer;
+  transition: transform 0.2s ease-out, box-shadow 0.2s ease-out;
+}
+
+.chiron-header__avatar-button:hover {
+  box-shadow: 0 0 0 var(--stroke-2) var(--color-bg-selected);
+}
+
+.chiron-header__avatar-button[aria-expanded='true'] {
+  box-shadow: 0 0 0 var(--stroke-2) var(--color-border-brand);
+}
+
+.chiron-header__avatar-button:focus-visible {
+  outline: var(--stroke-2) solid var(--color-border-focus);
+  outline-offset: 2px;
+}
+
+.chiron-header__menu {
+  position: absolute;
+  top: calc(100% + var(--space-12));
+  right: 0;
+  z-index: 10;
+  transform-origin: top right;
+  animation: chiron-menu-in 0.18s cubic-bezier(0.33, 1, 0.68, 1);
+}
+
+@keyframes chiron-menu-in {
+  from {
+    opacity: 0;
+    transform: translateY(-4px) scale(0.98);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .chiron-header__menu {
+    animation: none;
+  }
+}

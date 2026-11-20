@@ -1,0 +1,60 @@
+/* Reward tags: XP and coins */
+/* Declared on the theme element: the nearest [data-theme] wins. */
+:root,
+[data-theme='light'] {
+  --chiron-tag-coin-bg: var(--amber-50);
+}
+
+[data-theme='dark'] {
+  --chiron-tag-coin-bg: transparent;
+}
+
+.chiron-tag {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-6);
+  height: 32px;
+  padding: var(--space-6) var(--space-12) var(--space-6) var(--space-5);
+  border-radius: var(--radius-999);
+  background: var(--color-bg-surface);
+  color: var(--color-text-primary);
+  font-family: var(--font-body);
+  font-weight: 600;
+  font-size: 14px;
+  line-height: 18px;
+  white-space: nowrap;
+}
+
+.chiron-tag__icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex: none;
+  width: 20px;
+  height: 20px;
+  border-radius: var(--radius-999);
+}
+
+/* XP: filled circle (progress/xp) with a light bolt */
+.chiron-tag--xp .chiron-tag__icon {
+  background: var(--color-progress-xp);
+  color: var(--color-icon-inverse);
+}
+
+/* Coins: soft circle behind the coin */
+.chiron-tag--coins .chiron-tag__icon {
+  position: relative;
+  overflow: hidden;
+  background: var(--chiron-tag-coin-bg);
+}
+
+/* 3D coin from the Figma file: 22×22, offset (-1, -2) inside the 20px circle */
+.chiron-tag__coin {
+  position: absolute;
+  left: -1px;
+  top: -2px;
+  width: 22px;
+  height: 22px;
+  max-width: none;
+  object-fit: cover;
+}

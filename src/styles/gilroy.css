@@ -1,0 +1,20 @@
+/* Gilroy — headings and the logo. Licensed font, bundled from ./fonts
+   (the installed system copy is used first if present). */
+@font-face {
+  font-family: 'Gilroy';
+  font-weight: 500;
+  font-display: swap;
+  src: local('Gilroy Medium'), local('Gilroy-Medium'), url('./fonts/Gilroy-Medium.ttf') format('truetype');
+}
+@font-face {
+  font-family: 'Gilroy';
+  font-weight: 600;
+  font-display: swap;
+  src: local('Gilroy SemiBold'), local('Gilroy-SemiBold'), url('./fonts/Gilroy-SemiBold.ttf') format('truetype');
+}
+@font-face {
+  font-family: 'Gilroy';
+  font-weight: 700;
+  font-display: swap;
+  src: local('Gilroy Bold'), local('Gilroy-Bold'), url('./fonts/Gilroy-Bold.ttf') format('truetype');
+}

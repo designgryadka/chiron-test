@@ -1,0 +1,11 @@
+.chiron-icon {
+  display: inline-flex;
+  flex: none;
+  line-height: 0;
+}
+
+.chiron-icon > svg {
+  width: 100%;
+  height: 100%;
+  display: block;
+}

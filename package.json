@@ -1,0 +1,27 @@
+{
+  "name": "chiron-storybook",
+  "private": true,
+  "version": "0.1.0",
+  "type": "module",
+  "description": "Chiron design system: tokens (Light/Dark), icons, Button, Tag, Header",
+  "scripts": {
+    "storybook": "storybook dev -p 6006",
+    "build-storybook": "storybook build",
+    "typecheck": "tsc --noEmit"
+  },
+  "dependencies": {
+    "@fontsource/inter": "^5.1.0",
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1"
+  },
+  "devDependencies": {
+    "@figma/code-connect": "^2.1.0",
+    "@storybook/addon-docs": "^9.1.0",
+    "@storybook/react-vite": "^9.1.0",
+    "@types/react": "^18.3.12",
+    "@types/react-dom": "^18.3.1",
+    "storybook": "^9.1.0",
+    "typescript": "^5.6.3",
+    "vite": "^7.0.0"
+  }
+}

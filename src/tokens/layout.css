@@ -1,0 +1,55 @@
+/* GENERATED from the Figma file «Chiron» (Light + Dark only). Do not edit by hand. */
+:root {
+  --space-0: 0px;
+  --space-2: 2px;
+  --space-4: 4px;
+  --space-5: 5px;
+  --space-6: 6px;
+  --space-8: 8px;
+  --space-9: 9px;
+  --space-10: 10px;
+  --space-12: 12px;
+  --space-14: 14px;
+  --space-16: 16px;
+  --space-20: 20px;
+  --space-22: 22px;
+  --space-24: 24px;
+  --space-28: 28px;
+  --space-32: 32px;
+  --space-40: 40px;
+  --space-48: 48px;
+  --space-56: 56px;
+  --space-64: 64px;
+  --space-140: 140px;
+  --radius-0: 0px;
+  --radius-4: 4px;
+  --radius-6: 6px;
+  --radius-8: 8px;
+  --radius-10: 10px;
+  --radius-12: 12px;
+  --radius-14: 14px;
+  --radius-16: 16px;
+  --radius-20: 20px;
+  --radius-24: 24px;
+  --radius-32: 32px;
+  --radius-40: 40px;
+  --radius-999: 999px;
+  --stroke-1: 1px;
+  --stroke-1-5: 1.5px;
+  --stroke-2: 2px;
+
+  --shadow-card:
+    0px 1px 2px 0px var(--color-shadow-subtle);
+  --shadow-raised:
+    0px 1px 4px 0px var(--color-shadow-raised);
+  --shadow-raised-l:
+    0px 1px 2px 0px var(--color-shadow-subtle),
+    0px 8px 16px -2px var(--color-shadow-raised),
+    0px 24px 48px -8px var(--color-shadow-raised);
+  --shadow-stack-1:
+    0px 1px 3px 0px var(--color-shadow-subtle),
+    0px 8px 18px -6px var(--color-shadow-raised);
+  --shadow-stack-2:
+    0px 1px 3px 0px var(--color-shadow-subtle),
+    0px 6px 14px -6px var(--color-shadow-subtle);
+}
