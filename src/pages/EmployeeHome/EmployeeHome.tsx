@@ -121,12 +121,12 @@ export function EmployeeHome({
 }: EmployeeHomeProps) {
   const [theme, setTheme] = usePageTheme(defaultTheme, onThemeChange);
 
-  // Switching to the light theme writes the name again: a new key remounts
+  // Any theme switch writes the name again: a new key remounts
   // HandwrittenName, which replays its animation.
   const [nameRun, setNameRun] = React.useState(0);
   const previousTheme = React.useRef(theme);
   React.useEffect(() => {
-    if (theme === 'light' && previousTheme.current !== 'light') setNameRun((run) => run + 1);
+    if (theme !== previousTheme.current) setNameRun((run) => run + 1);
     previousTheme.current = theme;
   }, [theme]);
 
