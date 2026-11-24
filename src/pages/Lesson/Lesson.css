@@ -1,0 +1,822 @@
+/* Chiron · Урок 6 · Как распознать фишинговое письмо (Figma 288:8652), ported from lesson.html.
+   Colours: tokens only. Values Figma keeps as raw colours (success/danger text) are page variables.
+   Typography: the Figma text styles were updated after src/tokens/typography.css was
+   generated (e.g. Heading/H1 is now 40/44, Body/Small is Light 300, labels have
+   letter-spacing 1). The lesson uses the current Figma values via the .lp-* classes
+   below; the global .t-* classes are used where they still match. */
+
+.lp {
+  /* Address check: raw colours in the mockup (no tokens yet) */
+  --lp-success: #83ff8d;
+  --lp-danger: #e64f60;
+
+  --lp-header-offset: calc(var(--space-16) + 62px); /* top gap + header height */
+  --lp-sticky-top: calc(var(--lp-header-offset) + var(--space-32));
+
+  position: relative;
+  min-width: 1100px;
+  min-height: 100vh;
+  overflow-x: clip; /* clip, not hidden: keeps position: sticky working */
+  background: var(--color-bg-canvas);
+  color: var(--color-text-primary);
+  font-family: var(--font-body);
+}
+
+.lp[data-theme='light'] {
+  --lp-success: var(--green-800);
+  --lp-danger: var(--red-600);
+}
+
+.lp p {
+  margin: 0;
+}
+
+/* ---------- Typography (current Figma text styles) ---------- */
+
+.lp-heading-h1 {
+  margin: 0;
+  font: 700 40px/44px var(--font-heading);
+}
+
+.lp-heading-hero {
+  margin: 0;
+  font: 700 32px/36px var(--font-heading);
+}
+
+.lp-heading-h2 {
+  margin: 0;
+  font: 700 28px/32px var(--font-heading);
+}
+
+.lp-heading-h3 {
+  margin: 0;
+  font: 700 24px/28px var(--font-heading);
+}
+
+.lp-heading-h4 {
+  font: 500 18px/22px var(--font-heading);
+  letter-spacing: 1px;
+}
+
+.lp-body-lead {
+  font: 400 16px/24px var(--font-body);
+}
+
+.lp-body-default {
+  font: 400 16px/22px var(--font-body);
+}
+
+.lp-body-small {
+  font: 300 14px/18px var(--font-body);
+}
+
+.lp-label-default {
+  font: 500 14px/20px var(--font-body);
+  letter-spacing: 1px;
+}
+
+.lp-label-small {
+  font: 600 12px/16px var(--font-body);
+  letter-spacing: 1px;
+  text-transform: uppercase;
+}
+
+/* Buttons on this page use Label/Default with letter-spacing 1 */
+.lp .chiron-button {
+  letter-spacing: 1px;
+}
+
+/* ---------- Background, header, progress ---------- */
+
+.lp__backdrop {
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  will-change: opacity;
+}
+
+/* Header — fixed while scrolling */
+.lp__top {
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  padding: var(--space-16) var(--space-16) 0;
+}
+
+.lp__header {
+  width: calc(100% - 8px);
+}
+
+/* Reading progress: a 2px line under the header */
+.lp-progress {
+  position: fixed;
+  z-index: 101;
+  top: var(--lp-header-offset);
+  left: 50%;
+  width: min(1204px, 100vw);
+  height: 2px;
+  transform: translateX(-50%);
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 0.25s ease;
+}
+
+.lp-progress.is-visible {
+  opacity: 1;
+}
+
+.lp-progress__fill {
+  display: block;
+  width: 100%;
+  height: 100%;
+  border-radius: 0 0 1px 1px;
+  background: var(--color-bg-brand);
+  box-shadow: 0 2px 10px 0 var(--color-bg-brand);
+  transform: scaleX(0);
+  transform-origin: left center;
+  will-change: transform;
+}
+
+/* «Back to top» — the same glass as the header */
+.lp-to-top {
+  position: fixed;
+  z-index: 90;
+  right: var(--space-32);
+  bottom: var(--space-32);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 48px;
+  height: 48px;
+  padding: 0;
+  border: var(--stroke-1) solid var(--color-border-strong);
+  border-radius: var(--radius-999);
+  background: var(--chiron-header-bg);
+  -webkit-backdrop-filter: blur(16px);
+  backdrop-filter: blur(16px);
+  box-shadow: var(--chiron-header-shadow);
+  color: var(--color-text-primary);
+  cursor: pointer;
+  opacity: 0;
+  visibility: hidden;
+  transform: translateY(8px);
+  transition:
+    opacity 0.25s ease,
+    transform 0.25s ease,
+    visibility 0s linear 0.25s,
+    background-color 0.15s;
+}
+
+.lp-to-top.is-visible {
+  opacity: 1;
+  visibility: visible;
+  transform: none;
+  transition-delay: 0s;
+}
+
+.lp-to-top:hover {
+  background: var(--color-bg-hover);
+}
+
+.lp-to-top:focus-visible {
+  outline: var(--stroke-2) solid var(--color-border-focus);
+  outline-offset: 3px;
+}
+
+/* ---------- Layout ---------- */
+
+.lp__workspace {
+  position: relative;
+  z-index: 1;
+  display: grid;
+  grid-template-columns: 384px 792px;
+  column-gap: var(--space-24);
+  align-items: start;
+  width: 1200px;
+  margin: var(--space-64) auto 0;
+  padding-bottom: var(--space-140);
+}
+
+/* Left column — fixed while scrolling */
+.lp-nav {
+  position: sticky;
+  top: var(--lp-sticky-top);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-64);
+}
+
+.lp-course {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: var(--space-20);
+}
+
+.lp .lp-back {
+  padding: var(--space-8) var(--space-24);
+}
+
+.lp-course__name {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-12);
+  padding-top: var(--space-12);
+}
+
+.lp-course__meta {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-4);
+  white-space: nowrap;
+}
+
+.lp-course__title {
+  width: 384px;
+}
+
+.lp-course__rewards {
+  display: flex;
+  align-items: center;
+  gap: var(--space-6);
+  padding-bottom: var(--space-16);
+}
+
+/* Reward tags sit on the canvas here, so they use the subtle surface */
+.lp-course__rewards .chiron-tag {
+  background: var(--color-bg-subtle);
+}
+
+.lp-course__progress {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-8);
+  width: 100%;
+  padding-right: var(--space-40);
+}
+
+.lp-course__note {
+  color: var(--color-text-secondary);
+}
+
+/* Module progress: 8 segments */
+.lp-bars {
+  display: flex;
+  gap: var(--space-4);
+  width: 100%;
+  height: 6px;
+  overflow: hidden;
+}
+
+.lp-bars__item {
+  display: block;
+  flex: 1 0 0;
+  min-width: 1px;
+  height: 100%;
+  border-radius: var(--radius-4);
+  background: var(--color-progress-track);
+}
+
+.lp-bars__item.is-fixed {
+  flex: none;
+  width: 39.5px;
+}
+
+.lp-bars__item.is-done {
+  background: var(--color-progress-course);
+}
+
+.lp-bars__item.is-started::after {
+  content: '';
+  display: block;
+  width: 6px;
+  height: 6px;
+  border-radius: var(--radius-4);
+  background: var(--color-progress-course);
+}
+
+.lp-more {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-8);
+  padding: 0;
+  border: 0;
+  background: none;
+  color: var(--color-text-primary);
+  cursor: pointer;
+}
+
+.lp-more:hover {
+  color: var(--color-text-link);
+}
+
+/* ---------- Lesson ---------- */
+
+.lp-lesson {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-56);
+  padding: 0 102px 0 var(--space-40);
+}
+
+.lp-lesson > * {
+  width: 650px;
+}
+
+.lp-intro {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-16);
+}
+
+.lp-intro__title {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: var(--space-12);
+}
+
+.lp-chip {
+  display: inline-flex;
+  padding: var(--space-6) var(--space-12);
+  border-radius: var(--radius-999);
+  background: var(--color-bg-selected);
+  color: var(--color-text-brand);
+  font: 600 12px/16px var(--font-body);
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+
+.lp-sec {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-20);
+  scroll-margin-top: var(--lp-sticky-top);
+}
+
+/* Tiles «what attackers want» */
+.lp-tiles {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-start; /* each tile keeps its own height, as in Figma */
+  gap: var(--space-20) var(--space-12);
+}
+
+.lp-tile {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: var(--space-16);
+  width: 208px;
+}
+
+.lp-icon-box {
+  display: flex;
+  align-self: flex-start;
+  padding: var(--space-16);
+  border-radius: var(--radius-12);
+  background: var(--color-bg-subtle);
+}
+
+/* Lists */
+.lp-list {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-8);
+}
+
+.lp-list--12 {
+  gap: var(--space-12);
+}
+
+.lp-point {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--space-12);
+}
+
+.lp-point--center {
+  align-items: center;
+}
+
+.lp-point__text {
+  flex: 1 1 0;
+  min-width: 0;
+}
+
+/* Title + note in one Figma text box: 16/24 and 12/18 lines measure 41px there */
+.lp-point__text--titled {
+  display: flex;
+  flex-direction: column;
+}
+
+.lp-point__title {
+  font: 400 16px/24px var(--font-body);
+}
+
+.lp-point__note {
+  margin-top: -1px;
+  font: 400 12px/18px var(--font-body);
+  color: var(--color-text-secondary);
+}
+
+.lp-marker {
+  display: flex;
+  flex: none;
+  align-items: center;
+  justify-content: center;
+  width: 24px;
+  height: 24px;
+  border-radius: var(--radius-999);
+  background: var(--color-bg-selected);
+  color: var(--color-text-brand);
+  font: 600 12px/16px var(--font-body);
+  letter-spacing: 1px;
+}
+
+.lp-marker--danger {
+  background: var(--color-bg-danger);
+  color: var(--lp-danger);
+}
+
+/* Bullet: 6px brand dot in a 24px box (Figma «Точка») */
+.lp-dot {
+  position: relative;
+  flex: none;
+  width: 24px;
+  height: 24px;
+}
+
+.lp-dot::after {
+  content: '';
+  position: absolute;
+  left: 9px;
+  top: 9px;
+  width: 6px;
+  height: 6px;
+  border-radius: var(--radius-999);
+  background: var(--color-text-brand);
+}
+
+/* Illustration «image 40» */
+.lp-illustration {
+  display: block;
+  height: auto;
+  aspect-ratio: 1536 / 1024;
+  border-radius: var(--radius-16);
+  object-fit: cover;
+}
+
+.lp-scheme {
+  display: flex;
+  justify-content: center;
+  padding: var(--space-16) var(--space-20);
+  border-radius: var(--radius-16);
+  background: var(--color-bg-subtle);
+  color: var(--color-text-brand);
+  font: 500 14px/20px var(--font-body);
+  letter-spacing: 1px;
+  white-space: nowrap;
+}
+
+/* Steps */
+.lp-step {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--space-16);
+}
+
+.lp-step__n {
+  display: flex;
+  flex: none;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  border-radius: var(--radius-999);
+  background: var(--color-bg-lesson-active);
+  color: var(--color-text-on-selected);
+  font: 500 14px/20px var(--font-body);
+  letter-spacing: 1px;
+}
+
+.lp-step__text {
+  display: flex;
+  flex: 1 1 0;
+  flex-direction: column;
+  gap: var(--space-4);
+  min-width: 0;
+}
+
+.lp-step__desc {
+  color: var(--color-text-secondary);
+}
+
+/* Sender details (indented under step 1) */
+.lp-sender {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-8);
+  width: calc(100% - 48px);
+  margin-left: 48px;
+  padding: var(--space-12) var(--space-16);
+  border-radius: var(--radius-12);
+  background: var(--color-bg-subtle);
+}
+
+.lp-sender__row {
+  display: flex;
+  gap: var(--space-16);
+}
+
+.lp-sender__row span {
+  flex: 1 1 0;
+  min-width: 0;
+}
+
+.lp-sender__row span:first-child {
+  color: var(--color-text-secondary);
+}
+
+/* Example e-mail */
+.lp-mail {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-12);
+  padding: var(--space-12) var(--space-4) var(--space-4);
+  border-radius: var(--radius-16);
+  background: var(--color-bg-subtle);
+  overflow: hidden;
+}
+
+.lp-mail__head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-10);
+  padding: 0 var(--space-16);
+  color: var(--color-text-secondary);
+  white-space: nowrap;
+}
+
+.lp-mail__from {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-8);
+}
+
+.lp-mail__body {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-12);
+  padding: var(--space-16);
+  border-radius: var(--radius-12);
+  background: var(--color-bg-surface);
+}
+
+.lp-mail__field {
+  display: flex;
+  align-items: center;
+  gap: var(--space-8);
+}
+
+.lp-mail__key {
+  flex: none;
+  width: 100px;
+  color: var(--color-text-muted);
+}
+
+.lp-mail__value {
+  flex: 1 1 0;
+  min-width: 0;
+}
+
+.lp-mail__value--strong {
+  font-weight: 600;
+}
+
+.lp-mail__text {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-12);
+  padding-top: var(--space-8);
+  border-top: var(--stroke-1) solid var(--color-border-default);
+}
+
+.lp-mail__button {
+  align-self: flex-start;
+  padding: var(--space-10) var(--space-16);
+  border-radius: var(--radius-8);
+  background: var(--color-bg-selected);
+  color: var(--color-text-brand);
+  white-space: nowrap;
+}
+
+.lp-mail__sign {
+  color: var(--color-text-secondary);
+}
+
+/* Row cards: link check, key takeaways */
+.lp-row-card {
+  display: flex;
+  align-items: center;
+  gap: var(--space-12);
+  padding: var(--space-12) var(--space-16);
+  border-radius: var(--radius-12);
+  background: var(--color-bg-subtle);
+}
+
+.lp-address {
+  display: flex;
+  flex: 1 1 0;
+  flex-direction: column;
+  gap: var(--space-4);
+  min-width: 0;
+}
+
+.lp-address__url {
+  font: 500 14px/20px var(--font-body);
+  letter-spacing: 1px;
+  word-break: break-all;
+}
+
+.lp-address__url.is-ok {
+  color: var(--lp-success);
+}
+
+.lp-address__url.is-bad {
+  color: var(--lp-danger);
+}
+
+.lp-address__note {
+  color: var(--color-text-muted);
+}
+
+/* Checklist card (Figma «Что запомнить»): brand card over the hero photo */
+.lp-checklist {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+  padding: var(--space-16);
+  border-radius: var(--radius-20);
+  overflow: hidden;
+  background: var(--color-bg-brand);
+  color: var(--color-text-inverse);
+  scroll-margin-top: var(--lp-sticky-top);
+}
+
+.lp-checklist > :not(.lp-checklist__bg) {
+  position: relative;
+}
+
+.lp-checklist__bg {
+  position: absolute;
+  left: -56px;
+  top: -162px;
+  width: 884px;
+  height: 590px;
+  opacity: 0.7;
+  pointer-events: none;
+}
+
+.lp-checklist__bg img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.lp-checklist__bg::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: var(--alpha-black-20);
+}
+
+.lp-checklist__title {
+  padding: 0 160px var(--space-20) 0;
+}
+
+.lp-check-item {
+  display: flex;
+  align-items: center;
+  gap: var(--space-12);
+  padding: var(--space-16);
+  border-radius: var(--radius-16);
+  background: var(--alpha-black-20);
+}
+
+.lp-check-item__mark {
+  display: flex;
+  flex: none;
+  align-items: center;
+  justify-content: center;
+  width: 20px;
+  height: 20px;
+  border-radius: var(--radius-999);
+  background: var(--color-icon-inverse);
+  color: var(--cobalt-900);
+}
+
+/* ---------- Footer ---------- */
+
+.lp-foot {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-32);
+}
+
+.lp-done {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-20);
+  padding: 0 100px;
+  text-align: center;
+}
+
+.lp-done .lp-icon-box {
+  align-self: center;
+}
+
+.lp-done__next {
+  color: var(--color-text-muted);
+}
+
+.lp-pager {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: var(--space-20);
+  border-radius: var(--radius-16);
+  background: var(--color-bg-subtle);
+}
+
+.lp .lp-pager__prev {
+  width: 200px;
+  padding: 0 var(--space-20) 0 var(--space-16);
+}
+
+/* ---------- Side widgets (right of the text, wide screens only) ---------- */
+
+.lp-aside {
+  position: absolute;
+  left: 688px;
+  top: 0;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-12);
+  width: 250px;
+  padding: var(--space-20);
+  border-radius: var(--radius-16);
+  background: var(--color-bg-surface);
+  overflow: hidden;
+}
+
+.lp-aside__label {
+  color: var(--color-text-muted);
+  text-transform: uppercase;
+}
+
+.lp-aside__row {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--space-12);
+}
+
+.lp-aside__icon {
+  display: flex;
+  padding: var(--space-8);
+  border-radius: var(--radius-8);
+  background: var(--color-bg-canvas);
+}
+
+.lp-aside__text {
+  display: flex;
+  flex: 1 1 0;
+  flex-direction: column;
+  gap: var(--space-2);
+  min-width: 0;
+}
+
+.lp-aside__text span {
+  color: var(--color-text-secondary);
+}
+
+@media (max-width: 1600px) {
+  .lp-aside {
+    display: none;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .lp-progress,
+  .lp-to-top {
+    transition: none;
+  }
+}

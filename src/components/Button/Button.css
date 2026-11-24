@@ -66,3 +66,26 @@
     transition: none;
   }
 }
+
+/* Secondary — outlined (Figma: Button / Secondary) */
+.chiron-button--secondary {
+  border: var(--stroke-1) solid var(--color-border-strong);
+  background: transparent;
+  color: var(--color-text-primary);
+}
+
+.chiron-button--secondary:hover:not(:disabled),
+.chiron-button--secondary.is-hover {
+  background: var(--color-bg-hover);
+}
+
+.chiron-button--secondary:active:not(:disabled),
+.chiron-button--secondary.is-active {
+  background: var(--color-bg-pressed);
+}
+
+.chiron-button--secondary:disabled {
+  border-color: var(--color-border-disabled);
+  background: transparent;
+  color: var(--color-text-disabled);
+}

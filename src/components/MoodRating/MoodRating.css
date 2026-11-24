@@ -1,0 +1,73 @@
+/* Lesson rating (Figma: «Оценка»). The card background is a raw colour in Figma
+   (#0a0c0f in dark); in light the subtle surface is used. */
+:root,
+[data-theme='light'] {
+  --chiron-mood-rating-bg: var(--color-bg-subtle);
+}
+
+[data-theme='dark'] {
+  --chiron-mood-rating-bg: #0a0c0f;
+}
+
+.chiron-mood-rating {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-12);
+  padding: var(--space-20);
+  border-radius: var(--radius-16);
+  background: var(--chiron-mood-rating-bg);
+  color: var(--color-text-primary);
+}
+
+.chiron-mood-rating__question {
+  margin: 0;
+}
+
+.chiron-mood-rating__faces {
+  display: flex;
+  align-items: center;
+  gap: var(--space-4);
+}
+
+.chiron-mood-rating__face {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 44px;
+  height: 44px;
+  padding: var(--space-6);
+  border: 0;
+  border-radius: var(--radius-999);
+  background: transparent;
+  cursor: pointer;
+  transition: transform 0.15s, background-color 0.15s, opacity 0.15s;
+}
+
+.chiron-mood-rating__face img {
+  display: block;
+}
+
+.chiron-mood-rating__face:hover {
+  transform: scale(1.12);
+}
+
+.chiron-mood-rating__face.is-on {
+  background: var(--color-bg-hover);
+  transform: scale(1.12);
+}
+
+.chiron-mood-rating__faces.has-value .chiron-mood-rating__face:not(.is-on) {
+  opacity: 0.45;
+}
+
+.chiron-mood-rating__face:focus-visible {
+  outline: var(--stroke-2) solid var(--color-border-focus);
+  outline-offset: 2px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .chiron-mood-rating__face {
+    transition: none;
+  }
+}

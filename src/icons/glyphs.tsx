@@ -27,6 +27,36 @@ export function ArrowRightGlyph({ size = 15, className }: { size?: number; class
   );
 }
 
+/** Figma: Button / Secondary → arrow-left (15×15). */
+export function ArrowLeftGlyph({ size = 15, className }: { size?: number; className?: string }) {
+  return (
+    <svg className={className} width={size} height={size} viewBox="0 0 15 15" fill="none" aria-hidden="true" focusable="false">
+      <path
+        d="M12.5 7.5H2.5M6.5 11.5L2.5 7.5L6.5 3.5"
+        stroke="currentColor"
+        strokeWidth="1.2"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
+    </svg>
+  );
+}
+
+/** Figma: Icon/Check (14×14) inside «Selection / Check». */
+export function CheckSmallGlyph({ size = 14 }: { size?: number }) {
+  return (
+    <svg width={size} height={size} viewBox="0 0 14 14" fill="none" aria-hidden="true" focusable="false">
+      <path
+        d="M2.91667 7L5.25 9.33333L11.0833 3.5"
+        stroke="currentColor"
+        strokeWidth="1.65"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
+    </svg>
+  );
+}
+
 export function BoltGlyph({ size = 12 }: { size?: number }) {
   return (
     <svg width={size} height={size} viewBox="0 0 12 12" fill="none" aria-hidden="true" focusable="false">

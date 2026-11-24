@@ -5,6 +5,10 @@ import './Button.css';
 export interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
   /** Button label. */
   children?: React.ReactNode;
+  /** `primary` — filled brand button, `secondary` — outlined (Figma: Button / Secondary). */
+  variant?: 'primary' | 'secondary';
+  /** Icon before the label, e.g. a back arrow. */
+  leadingIcon?: React.ReactNode;
   /** Show the trailing arrow. */
   showArrow?: boolean;
   /** Stretch to the width of the container. */
@@ -18,7 +22,9 @@ export interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElemen
 
 export function Button({
   children = 'Начать курс',
-  showArrow = true,
+  variant = 'primary',
+  leadingIcon,
+  showArrow = variant === 'primary',
   fullWidth = false,
   state,
   className,
@@ -27,6 +33,7 @@ export function Button({
 }: ButtonProps) {
   const classes = [
     'chiron-button',
+    variant === 'secondary' && 'chiron-button--secondary',
     fullWidth && 'chiron-button--full',
     state && `is-${state}`,
     className,
@@ -36,6 +43,7 @@ export function Button({
 
   return (
     <button {...rest} type={type} className={classes}>
+      {leadingIcon}
       <span className="chiron-button__label">{children}</span>
       {showArrow && <ArrowRightGlyph className="chiron-button__arrow" />}
     </button>

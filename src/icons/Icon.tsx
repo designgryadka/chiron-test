@@ -1,7 +1,8 @@
 import React from 'react';
 import './Icon.css';
 
-// All SVGs from «Chiron icons.zip», with fills replaced by currentColor.
+// SVGs from «Chiron icons.zip» and the Figma icon set (Icons · Local originals, node 30:43),
+// with fills replaced by currentColor.
 const modules = import.meta.glob<string>('./svg/*.svg', {
   query: '?raw',
   import: 'default',
@@ -10,24 +11,38 @@ const modules = import.meta.glob<string>('./svg/*.svg', {
 
 export const iconNames = [
   'alert-2',
+  'arrow-left',
   'calendar',
+  'cancel',
+  'card',
   'check',
+  'checklist',
+  'checkmark',
+  'chevron-down',
   'clock',
   'close',
   'copy',
   'course-type',
   'delete',
+  'doc-attach',
   'edit',
+  'education',
   'eraser',
   'gear',
   'info',
+  'key',
   'lock-round',
+  'mail-receive',
   'minus',
+  'news',
   'notification',
+  'pin',
   'plus',
   'question',
   'search',
+  'to-top',
   'user',
+  'user-card-2',
 ] as const;
 
 export type IconName = (typeof iconNames)[number];

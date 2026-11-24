@@ -1,0 +1,51 @@
+/* Lesson table of contents */
+.chiron-toc {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+  width: 257px;
+}
+
+/* Label / Small (Figma: 600 12/16, letter-spacing 1), muted */
+.chiron-toc__title {
+  margin: 0;
+  padding-bottom: var(--space-16);
+  font-family: var(--font-body);
+  font-weight: 600;
+  font-size: 12px;
+  line-height: 16px;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  color: var(--color-text-muted);
+}
+
+/* TOC item: Body / Small (Light 300 14/18) */
+.chiron-toc__item {
+  display: flex;
+  align-items: center;
+  gap: var(--space-12);
+  height: 32px;
+  padding: var(--space-6) var(--space-8) var(--space-6) var(--space-12);
+  border-radius: var(--radius-8);
+  font-family: var(--font-body);
+  font-weight: 300;
+  font-size: 14px;
+  line-height: 18px;
+  color: var(--color-text-secondary);
+  text-decoration: none;
+  transition: background-color 0.2s, color 0.2s;
+}
+
+.chiron-toc__item:hover {
+  color: var(--color-text-primary);
+}
+
+.chiron-toc__item.is-active {
+  background: var(--color-bg-subtle);
+  color: var(--color-text-primary);
+}
+
+.chiron-toc__item:focus-visible {
+  outline: var(--stroke-2) solid var(--color-border-focus);
+  outline-offset: 1px;
+}

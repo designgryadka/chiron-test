@@ -1,6 +1,7 @@
 import React from 'react';
 import type { Meta, StoryObj } from '@storybook/react-vite';
 import { Button } from './Button';
+import { ArrowLeftGlyph } from '../../icons/glyphs';
 
 const meta = {
   title: 'Components/Button',
@@ -9,6 +10,7 @@ const meta = {
   args: { children: 'Начать курс', showArrow: true, disabled: false },
   argTypes: {
     state: { control: 'select', options: [undefined, 'hover', 'active', 'focus'] },
+    variant: { control: 'inline-radio', options: ['primary', 'secondary'] },
     children: { control: 'text' },
   },
   parameters: {
@@ -42,6 +44,11 @@ export const WithoutArrow: Story = { args: { showArrow: false } };
 export const LessonLabel: Story = {
   name: 'Label: «Начать урок»',
   args: { children: 'Начать урок' },
+};
+
+export const Secondary: Story = {
+  name: 'Secondary (back)',
+  args: { variant: 'secondary', children: 'Предыдущий урок', leadingIcon: <ArrowLeftGlyph /> },
 };
 
 export const AllStates: Story = {

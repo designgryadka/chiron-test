@@ -5,19 +5,6 @@
    carries its own data-theme. */
 
 .employee-home {
-  /* Background decoration */
-  --eh-blob-sky: var(--color-decoration-blob-sky);
-  --eh-blob-indigo: var(--color-decoration-blob-indigo);
-  --eh-blob-light: var(--color-decoration-blob-light);
-  /* Cobalt glows: cobalt/500 at 10% in Figma, boosted to 15% */
-  --eh-glow-cobalt: var(--cobalt-500);
-  /* Blob intensity: ~1.5× the mockup values (0.3 / 0.2 / 0.1 / 0.1), so the
-     colours read as vivid in the browser as in Figma */
-  --eh-blob-sky-opacity: 0.45;
-  --eh-blob-light-opacity: 0.3;
-  --eh-blob-indigo-opacity: 0.16;
-  --eh-glow-opacity: 0.15;
-
   /* Hero card: always sits on a dark photo, so its content uses inverse colours */
   --eh-hero-text: var(--color-text-inverse);
   --eh-hero-icon: var(--color-icon-inverse);
@@ -75,69 +62,6 @@
 ::view-transition-old(root),
 ::view-transition-new(root) {
   animation-duration: 0.3s;
-}
-
-/* ---------- Backdrop ---------- */
-
-.employee-home__backdrop {
-  position: absolute;
-  inset: 0;
-  pointer-events: none;
-}
-
-.eh-blob {
-  position: absolute;
-  border-radius: 50%;
-}
-
-.eh-blob--sky {
-  left: 366px;
-  top: 461px;
-  width: 511px;
-  height: 511px;
-  background: var(--eh-blob-sky);
-  opacity: var(--eh-blob-sky-opacity);
-  filter: blur(200px);
-}
-
-.eh-blob--light {
-  left: 796px;
-  top: -123px;
-  width: 900px;
-  height: 426px;
-  background: var(--eh-blob-light);
-  opacity: var(--eh-blob-light-opacity);
-  filter: blur(200px);
-}
-
-.eh-blob--indigo {
-  left: 789px;
-  top: 836px;
-  width: 1044px;
-  height: 511px;
-  background: var(--eh-blob-indigo);
-  opacity: var(--eh-blob-indigo-opacity);
-  filter: blur(200px);
-}
-
-.eh-blob--halo {
-  left: 223px;
-  top: -170px;
-  width: 1000px;
-  height: 520px;
-  background: var(--eh-glow-cobalt);
-  opacity: var(--eh-glow-opacity);
-  filter: blur(80px);
-}
-
-.eh-blob--glow {
-  left: 343px;
-  top: 78px;
-  width: 620px;
-  height: 300px;
-  background: var(--eh-glow-cobalt);
-  opacity: var(--eh-glow-opacity);
-  filter: blur(95px);
 }
 
 /* ---------- Header ---------- */

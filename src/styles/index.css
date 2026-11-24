@@ -1,5 +1,6 @@
-/* Fonts: Inter from npm. Gilroy is a commercial font and is NOT bundled —
-   it is picked up from the system if installed (see README → «Шрифты»). */
+/* Fonts: Inter from npm (300–600). Gilroy and Fet are licensed and bundled from
+   src/styles/fonts (see README → «Шрифты»). */
+@import '@fontsource/inter/300.css';
 @import '@fontsource/inter/400.css';
 @import '@fontsource/inter/500.css';
 @import '@fontsource/inter/600.css';

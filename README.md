@@ -21,11 +21,12 @@ npm run storybook     # http://localhost:6006
 | Foundations / Colors | Figma: коллекции `Chiron · Primitives` и `Chiron · Colors` (только Light и Dark) |
 | Foundations / Typography | Figma: текстовые стили `Chiron/*` (без `v2`) |
 | Foundations / Spacing & Radius | Figma: коллекция `Chiron · Layout`, effect-стили |
-| Foundations / Icons | архив `Chiron icons.zip` (19 SVG) |
+| Foundations / Icons | архив `Chiron icons.zip` + набор иконок из Figma (node 30:43), 33 SVG |
 | Components / Button | кнопка: Default, Hover, Active, Focus, Disabled |
 | Components / Tag | теги XP и монет |
 | Components / Header | шапка + Nav item |
 | Components / ProfileMenu | меню профиля: переход в профиль (пока неактивен) и переключатель темы |
+| Components / Callout, TableOfContents, MoodRating | выноска, содержание урока, оценка занятия (Figma: урок 288:8652) |
 
 ## Токены
 
@@ -41,7 +42,7 @@ CSS-переменные лежат в `src/tokens/` и **генерируютс
 
 ## Шрифты
 
-- **Inter** подключается из npm (`@fontsource/inter`).
+- **Inter** подключается из npm (`@fontsource/inter`, начертания 300–600).
 - **Gilroy** (заголовки, логотип) и **Fet** (имя в приветствии) — лицензионные, файлы лежат в `src/styles/fonts/`
   и подключаются в `src/styles/gilroy.css` и `src/styles/fet.css`. Если шрифт установлен в системе, берётся системная копия.
 
@@ -56,6 +57,7 @@ CSS-переменные лежат в `src/tokens/` и **генерируютс
 | Раздел Storybook | Откуда |
 |---|---|
 | Pages / Главная сотрудника | Figma: «Chiron · Главная сотрудника», 1920 × 1074 — тёмная (239:7913) и светлая (228:4162) темы; тема переключается в меню профиля |
+| Pages / Урок | Figma: «Chiron · Урок 6 · Как распознать фишинговое письмо» (288:8652), перенос `lesson.html`: закреплённые шапка и левая колонка, подсветка содержания при скролле, прогресс чтения, кнопка «Наверх», затухающий фон |
 
 
 ## Code Connect

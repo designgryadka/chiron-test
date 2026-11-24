@@ -1,0 +1,89 @@
+/* Page backdrop: blurred colour blobs (Figma «Fon»). Colours are decoration tokens.
+   Intensity is ~1.5× the mockup values (0.3 / 0.2 / 0.1 / 0.1), so the colours read
+   as vivid in the browser as in Figma. */
+.chiron-backdrop {
+  --chiron-blob-sky: var(--color-decoration-blob-sky);
+  --chiron-blob-indigo: var(--color-decoration-blob-indigo);
+  --chiron-blob-light: var(--color-decoration-blob-light);
+  /* Cobalt glows: cobalt/500 at 10% in Figma, boosted to 15% */
+  --chiron-glow-cobalt: var(--cobalt-500);
+  --chiron-blob-sky-opacity: 0.45;
+  --chiron-blob-light-opacity: 0.3;
+  --chiron-blob-indigo-opacity: 0.16;
+  --chiron-glow-opacity: 0.15;
+
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  pointer-events: none;
+}
+
+.chiron-backdrop--fixed {
+  position: fixed;
+  z-index: 0;
+  will-change: opacity;
+}
+
+/* 1920px artboard, centred */
+.chiron-backdrop__artboard {
+  position: absolute;
+  top: 0;
+  left: calc(50% - 960px);
+  width: 1920px;
+  height: 100%;
+}
+
+.chiron-blob {
+  position: absolute;
+  border-radius: 50%;
+}
+
+.chiron-blob--sky {
+  left: 366px;
+  top: 461px;
+  width: 511px;
+  height: 511px;
+  background: var(--chiron-blob-sky);
+  opacity: var(--chiron-blob-sky-opacity);
+  filter: blur(200px);
+}
+
+.chiron-blob--light {
+  left: 796px;
+  top: -123px;
+  width: 900px;
+  height: 426px;
+  background: var(--chiron-blob-light);
+  opacity: var(--chiron-blob-light-opacity);
+  filter: blur(200px);
+}
+
+.chiron-blob--indigo {
+  left: 789px;
+  top: 836px;
+  width: 1044px;
+  height: 511px;
+  background: var(--chiron-blob-indigo);
+  opacity: var(--chiron-blob-indigo-opacity);
+  filter: blur(200px);
+}
+
+.chiron-blob--halo {
+  left: 223px;
+  top: -170px;
+  width: 1000px;
+  height: 520px;
+  background: var(--chiron-glow-cobalt);
+  opacity: var(--chiron-glow-opacity);
+  filter: blur(80px);
+}
+
+.chiron-blob--glow {
+  left: 343px;
+  top: 78px;
+  width: 620px;
+  height: 300px;
+  background: var(--chiron-glow-cobalt);
+  opacity: var(--chiron-glow-opacity);
+  filter: blur(95px);
+}

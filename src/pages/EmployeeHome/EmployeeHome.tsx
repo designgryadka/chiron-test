@@ -1,11 +1,11 @@
 import React from 'react';
-import { flushSync } from 'react-dom';
 import { Header, defaultNavItems, type HeaderProps } from '../../components/Header/Header';
 import { Button } from '../../components/Button/Button';
 import { Tag } from '../../components/Tag/Tag';
 import { Icon } from '../../icons/Icon';
-import type { ThemeName } from '../../components/ProfileMenu/ProfileMenu';
-import avatarUrl from './assets/avatar.png';
+import { usePageTheme, type ThemeName } from '../../hooks/usePageTheme';
+import { Backdrop } from '../../components/Backdrop/Backdrop';
+import avatarUrl from '../../assets/avatar.png';
 import heroImage13 from './assets/hero-image-13.png';
 import heroImage31 from './assets/hero-image-31.png';
 import idCardUrl from './assets/id-card.svg';
@@ -47,47 +47,6 @@ export interface EmployeeHomeProps {
   defaultTheme?: ThemeName;
   /** Called when the user switches the theme in the profile menu. */
   onThemeChange?: (theme: ThemeName) => void;
-}
-
-const readDocumentTheme = (): ThemeName =>
-  typeof document !== 'undefined' && document.documentElement.dataset.theme === 'dark' ? 'dark' : 'light';
-
-/**
- * Page theme. The page puts `data-theme` on its own root (so it wins over any
- * host theme) and mirrors it to `<html>`. External changes of `<html data-theme>`
- * (e.g. the Storybook toolbar) are followed. Switching uses a View Transition
- * cross-fade where available.
- */
-function usePageTheme(defaultTheme?: ThemeName, onThemeChange?: (theme: ThemeName) => void) {
-  const [theme, setTheme] = React.useState<ThemeName>(() => defaultTheme ?? readDocumentTheme());
-
-  React.useEffect(() => {
-    const html = document.documentElement;
-    const observer = new MutationObserver(() => {
-      const value = html.dataset.theme;
-      if (value === 'light' || value === 'dark') setTheme(value);
-    });
-    observer.observe(html, { attributes: true, attributeFilter: ['data-theme'] });
-    return () => observer.disconnect();
-  }, []);
-
-  const changeTheme = React.useCallback(
-    (next: ThemeName) => {
-      const apply = () => {
-        flushSync(() => setTheme(next));
-        document.documentElement.dataset.theme = next;
-      };
-      const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-      const doc = document as Document & { startViewTransition?: (cb: () => void) => unknown };
-      if (doc.startViewTransition && !reduceMotion && document.visibilityState === 'visible') {
-        doc.startViewTransition(apply);
-      } else apply();
-      onThemeChange?.(next);
-    },
-    [onThemeChange],
-  );
-
-  return [theme, changeTheme] as const;
 }
 
 export const defaultCourse: CourseHero = {
@@ -133,13 +92,7 @@ export function EmployeeHome({
   return (
     <div className="employee-home" data-theme={theme}>
       {/* Background blobs and glows (decorative) */}
-      <div className="employee-home__backdrop" aria-hidden="true">
-        <span className="eh-blob eh-blob--sky" />
-        <span className="eh-blob eh-blob--light" />
-        <span className="eh-blob eh-blob--indigo" />
-        <span className="eh-blob eh-blob--halo" />
-        <span className="eh-blob eh-blob--glow" />
-      </div>
+      <Backdrop />
 
       <div className="employee-home__top">
         <Header

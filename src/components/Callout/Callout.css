@@ -1,0 +1,47 @@
+/* Callout / Important */
+.chiron-callout {
+  display: flex;
+  align-items: center;
+  gap: var(--space-12);
+  padding: var(--space-16);
+  border-radius: var(--radius-16);
+  background: var(--color-bg-info);
+  color: var(--color-text-primary);
+}
+
+.chiron-callout__icon {
+  display: flex;
+  flex: none;
+  padding: var(--space-8);
+  border-radius: var(--radius-999);
+  background: var(--color-progress-xp);
+}
+
+.chiron-callout__text {
+  display: flex;
+  flex: 1 1 0;
+  flex-direction: column;
+  gap: var(--space-4);
+  min-width: 0;
+}
+
+/* Label / Small (Figma: 600 12/16, letter-spacing 1) */
+.chiron-callout__label {
+  margin: 0;
+  font-family: var(--font-body);
+  font-weight: 600;
+  font-size: 12px;
+  line-height: 16px;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  color: var(--color-text-link);
+}
+
+/* Body / Small (Figma: Light 300 14/18) */
+.chiron-callout__body {
+  margin: 0;
+  font-family: var(--font-body);
+  font-weight: 300;
+  font-size: 14px;
+  line-height: 18px;
+}
