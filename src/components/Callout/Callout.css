@@ -1,17 +1,14 @@
-/* Callout / Important.
-   Dark (Figma 288:8652): bg/info + text/link label.
-   Light (Figma 262:7235, «Важно»): bg/warning + text/warning label.
-   The icon circle is progress/xp in both (blue in dark, amber in light).
-   Declared on the theme element, so the nearest [data-theme] wins. */
+/* Callout / Important (Figma 269:7477): bg/info, a brand circle with the
+   inverse alert icon, a text/link overline.
+   Dark: icon/brand is a light blue there, too pale under the white icon, so the
+   circle keeps the saturated progress/xp blue (#2474ff). */
 :root,
 [data-theme='light'] {
-  --chiron-callout-bg: var(--color-bg-warning);
-  --chiron-callout-label: var(--color-text-warning);
+  --chiron-callout-icon-bg: var(--color-icon-brand);
 }
 
 [data-theme='dark'] {
-  --chiron-callout-bg: var(--color-bg-info);
-  --chiron-callout-label: var(--color-text-link);
+  --chiron-callout-icon-bg: var(--color-progress-xp);
 }
 
 .chiron-callout {
@@ -20,7 +17,7 @@
   gap: var(--space-12);
   padding: var(--space-16);
   border-radius: var(--radius-16);
-  background: var(--chiron-callout-bg);
+  background: var(--color-bg-info);
   color: var(--color-text-primary);
 }
 
@@ -29,7 +26,7 @@
   flex: none;
   padding: var(--space-8);
   border-radius: var(--radius-999);
-  background: var(--color-progress-xp);
+  background: var(--chiron-callout-icon-bg);
 }
 
 .chiron-callout__text {
@@ -49,7 +46,7 @@
   line-height: 16px;
   letter-spacing: 1px;
   text-transform: uppercase;
-  color: var(--chiron-callout-label);
+  color: var(--color-text-link);
 }
 
 /* Body / Small (Figma: Light 300 14/18) */

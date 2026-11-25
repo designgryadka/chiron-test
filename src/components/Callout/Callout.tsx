@@ -9,12 +9,12 @@ export interface CalloutProps extends Omit<React.HTMLAttributes<HTMLDivElement>,
   icon?: IconName;
 }
 
-/** Figma: Callout / Important — info background, brand icon, overline and text. */
+/** Figma: Callout / Important (269:7477) — info background, brand icon circle, overline and text. */
 export function Callout({ label, children, icon = 'alert-2', className, ...rest }: CalloutProps) {
   return (
     <div {...rest} className={['chiron-callout', className].filter(Boolean).join(' ')}>
       <span className="chiron-callout__icon">
-        <Icon name={icon} size={18} color="var(--color-icon-on-brand)" />
+        <Icon name={icon} size={18} color="var(--color-icon-inverse)" />
       </span>
       <div className="chiron-callout__text">
         <p className="chiron-callout__label">{label}</p>

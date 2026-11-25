@@ -25,13 +25,27 @@
 /* Light theme: same tokens, Light mode (Figma variables); patterns from the light
    lesson mockup (262:7235) — white cards on the canvas get the Card shadow. */
 .lp[data-theme='light'] {
-  --lp-success: var(--green-800);
+  --lp-success: #27c334; /* raw colour given for the light theme */
   --lp-danger: var(--red-600);
   --lp-surface-shadow: var(--shadow-card);
 }
 
+/* Light: the blurred blobs at half strength */
+.lp[data-theme='light'] .chiron-backdrop {
+  --chiron-blob-sky-opacity: 0.225;
+  --chiron-blob-light-opacity: 0.15;
+  --chiron-blob-indigo-opacity: 0.08;
+  --chiron-glow-opacity: 0.075;
+}
+
 .lp[data-theme='dark'] {
   --lp-surface-shadow: none;
+  --lp-crumbs-color: var(--color-text-inverse);
+}
+
+.lp[data-theme='light'] {
+  /* text/inverse is white in Light: the breadcrumbs keep the primary text colour */
+  --lp-crumbs-color: var(--color-text-primary);
 }
 
 .lp p {
@@ -88,11 +102,6 @@
   text-transform: uppercase;
 }
 
-/* Buttons on this page use Label/Default with letter-spacing 1 */
-.lp .chiron-button {
-  letter-spacing: 1px;
-}
-
 /* ---------- Background, header, progress ---------- */
 
 .lp__backdrop {
@@ -115,15 +124,15 @@
   width: calc(100% - 8px);
 }
 
-/* Reading progress: a 2px line under the header */
+/* Reading progress (Figma 307:13006): a 3px brand line right under the header,
+   48px from both screen edges, with a soft brand glow */
 .lp-progress {
   position: fixed;
   z-index: 101;
   top: var(--lp-header-offset);
-  left: 50%;
-  width: min(1204px, 100vw);
-  height: 2px;
-  transform: translateX(-50%);
+  left: var(--space-48);
+  right: var(--space-48);
+  height: 3px;
   pointer-events: none;
   opacity: 0;
   transition: opacity 0.25s ease;
@@ -135,14 +144,11 @@
 
 .lp-progress__fill {
   display: block;
-  width: 100%;
+  width: 0;
   height: 100%;
-  border-radius: 0 0 1px 1px;
+  border-radius: 0 0 2px 2px;
   background: var(--color-bg-brand);
-  box-shadow: 0 2px 10px 0 var(--color-bg-brand);
-  transform: scaleX(0);
-  transform-origin: left center;
-  will-change: transform;
+  box-shadow: 0 4px 20px 0 var(--color-bg-brand);
 }
 
 /* «Back to top» — the same glass as the header */
@@ -840,6 +846,17 @@
   }
 }
 
+.lp-course__crumbs {
+  display: none;
+  gap: var(--space-4);
+  white-space: nowrap;
+  color: var(--lp-crumbs-color);
+}
+
+.lp-br-narrow {
+  display: none;
+}
+
 /* ---------- Tablet: one column (Figma «Урок 6 · Планшет 768», 301:9293) ---------- */
 
 @media (max-width: 1231px) {
@@ -905,6 +922,7 @@
 
 @media (max-width: 767px) {
   .lp {
+    --lp-header-offset: calc(var(--space-16) + 64px); /* the mobile bar is 64px */
     --lp-sticky-top: calc(var(--lp-header-offset) + var(--space-24));
   }
 
@@ -922,17 +940,7 @@
     gap: var(--space-40);
   }
 
-  /* Headings one step smaller: H1 → H2, H2 → H3, H3 → H4 */
-  .lp-heading-h1 {
-    font-size: 28px;
-    line-height: 32px;
-  }
-
-  .lp-heading-h2 {
-    font-size: 24px;
-    line-height: 28px;
-  }
-
+  /* H1 and H2 keep their sizes; H3 subheadings use H4 */
   .lp-heading-h3 {
     font: 500 18px/22px var(--font-heading);
     letter-spacing: 1px;
@@ -971,8 +979,15 @@
     gap: var(--space-2);
   }
 
-  .lp-mail__button {
-    align-self: stretch;
+  /* Letter fields: label above the value */
+  .lp-mail__field {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .lp-mail__value {
+    flex: none;
+    width: 100%;
   }
 
   .lp-checklist__title {
@@ -980,7 +995,8 @@
   }
 
   .lp-checklist__bg {
-    top: -17.28px;
+    left: -90px;
+    top: -32.67px;
     width: 592px;
     height: 714px;
   }
@@ -995,8 +1011,68 @@
     gap: var(--space-12);
   }
 
-  .lp .lp-pager__prev {
+  .lp-pager {
+    gap: var(--space-20);
+  }
+
+  /* Larger touch targets: 56px, Body/Emphasis-sized labels */
+  .lp .lp-pager .chiron-button {
     width: 100%;
+    height: 56px;
+    font-size: 16px;
+    letter-spacing: 0;
+  }
+
+  /* Course block: «Назад» and rewards in one row, breadcrumbs, full-width progress */
+  .lp-nav {
+    padding-bottom: var(--space-24);
+  }
+
+  .lp-course {
+    display: grid;
+    grid-template-columns: auto 1fr;
+    column-gap: var(--space-16);
+    row-gap: var(--space-20);
+  }
+
+  .lp-course .lp-back {
+    grid-area: 1 / 1;
+  }
+
+  .lp-course__rewards {
+    grid-area: 1 / 2;
+    justify-self: end;
+    align-self: center;
+    padding-bottom: 0;
+  }
+
+  .lp-course__rewards .chiron-tag {
+    background: var(--color-bg-hover);
+  }
+
+  .lp-course__name,
+  .lp-course__progress {
+    grid-column: 1 / -1;
+  }
+
+  .lp-course__meta,
+  .lp-course__title,
+  .lp-more,
+  .lp-intro .lp-chip,
+  .lp-br-wide {
+    display: none;
+  }
+
+  .lp-course__crumbs {
+    display: flex;
+  }
+
+  .lp-course__progress {
+    padding-right: 0;
+  }
+
+  .lp-br-narrow {
+    display: inline;
   }
 }
 

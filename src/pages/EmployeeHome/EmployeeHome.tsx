@@ -10,15 +10,15 @@ import heroImage13 from './assets/hero-image-13.png';
 import heroImage31 from './assets/hero-image-31.png';
 import idCardUrl from './assets/id-card.svg';
 import dotUrl from './assets/dot.svg';
-import illustrationMaskUrl from './assets/illustration-mask.png';
-import illustrationLightUrl from './assets/illustration-light.png';
+import phishingIconUrl from './assets/phishing-icon.svg';
 import './EmployeeHome.css';
 
-/* Figma: «Chiron · Главная сотрудника» Desktop 1920 × 1074.
-   Dark — node 239:7913, Light — node 228:4162. */
+/* Figma: «Chiron · Главная · Основы кибербезопасности» — Desktop 285:8564,
+   Планшет 768 301:9059, Мобильный 390 301:9178. Light theme: the same tokens in
+   Light mode (layout of the earlier light mockup 228:4162). */
 
 export interface CourseLesson {
-  /** Overline, e.g. «1 урок». */
+  /** Overline, e.g. «Модуль 2 · Урок 1». */
   label: string;
   title: string;
 }
@@ -29,8 +29,8 @@ export interface CourseHero {
   deadline: string;
   duration: string;
   title: React.ReactNode;
-  description: string;
-  xp: number;
+  description: React.ReactNode;
+  xp: number | string;
   coins: number;
   lesson: CourseLesson;
 }
@@ -50,22 +50,21 @@ export interface EmployeeHomeProps {
 }
 
 export const defaultCourse: CourseHero = {
-  category: 'Работа с Chiron',
-  meta: '4 урока + тест',
-  deadline: 'До 18 нояб., 23:59 (МСК)',
+  category: 'Основы',
+  meta: '8 модулей · 40 уроков',
+  deadline: 'До 1 декабря 23:59 (МСК)',
   duration: '≈ 30 мин',
-  title: (
+  title: 'Основы кибербезопасности',
+  description: (
     <>
-      Онбординг:
-      <br />
-      как работать в Chiron
+      Научитесь распознавать киберугрозы, защищать рабочие данные и безопасно пользоваться цифровыми сервисами.
+      Разберём типичные сценарии атак <br className="eh-br-wide" />и научимся правильно действовать в подозрительных
+      ситуациях.
     </>
   ),
-  description:
-    'Где что находится в Chiron и как проходить обучение: вход, курсы и тесты, история и сертификаты, политики, база знаний, профиль и оформление.',
-  xp: 30,
+  xp: '1 200',
   coins: 30,
-  lesson: { label: '1 урок', title: 'Добро пожаловать: вход и главная страница' },
+  lesson: { label: 'Модуль 2 · Урок 1', title: 'Как распознать фишинговое письмо' },
 };
 
 export function EmployeeHome({
@@ -114,12 +113,12 @@ export function EmployeeHome({
                 <HandwrittenName key={nameRun} text={`${userName},`} />
                 <span className="eh-greeting__space"> </span>
               </span>
-              <span className="eh-greeting__line t-heading-h1">приветствуем на портале</span>
+              <span className="eh-greeting__line">приветствуем на портале</span>
             </h1>
             <p className="eh-greeting__lead t-body-lead">
               Здесь собрана ваша персональная программа обучения. Постепенно вам откроются все функции,{' '}
-              <br />а пока начните с первой задачи - познакомиться с порталом, чтобы вы смогли получить максимум
-              возможностей.
+              <br className="eh-br-wide" />а пока начните <br className="eh-br-narrow" />с первой задачи - познакомьтесь
+              с основами кибербезопасности.
             </p>
           </section>
 
@@ -209,6 +208,7 @@ function CourseHeroCard({
     <div className="eh-course">
       <article ref={cardRef} className={cardClass}>
         <div className="eh-course__media" aria-hidden="true">
+          {/* image 13 and the glow are visible on tablet and mobile only (hidden in the desktop mockup) */}
           <img className="eh-course__image eh-course__image--13" src={heroImage13} alt="" />
           <div className="eh-course__image eh-course__image--31">
             <img src={heroImage31} alt="" />
@@ -224,62 +224,53 @@ function CourseHeroCard({
                 <img src={idCardUrl} width={14} height={11.2225} alt="" />
               </span>
             </span>
-            <span className="t-label-tag">{course.category}</span>
+            <span className="eh-course__category-label">{course.category}</span>
           </span>
           <span className="eh-course__meta t-caption-default">{course.meta}</span>
         </div>
 
-        <div className="eh-course__details t-caption-default">
-          <span className="eh-course__detail">
-            <Icon name="calendar" size={12} color="var(--eh-hero-icon)" />
-            {course.deadline}
-          </span>
-          <img className="eh-course__dot" src={dotUrl} width={4} height={4} alt="" />
-          <span className="eh-course__detail">
-            <Icon name="clock" size={12} color="var(--eh-hero-icon)" />
-            {course.duration}
-          </span>
-        </div>
-
-        <div className="eh-course__name">
-          <h2 className="eh-course__title t-heading-h1">{course.title}</h2>
-          <p className="eh-course__description t-caption-default">{course.description}</p>
-          <div className="eh-course__rewards">
-            <Tag kind="xp" value={course.xp} />
-            <Tag kind="coins" value={course.coins} />
-          </div>
-        </div>
-
-        <div className="eh-lesson">
-          <div className="eh-lesson__illustration" aria-hidden="true">
-            {/* Light theme (Figma 237:7217): line art tinted with blend «lighten» */}
-            <span className="eh-lesson__art-light">
-              <span className="eh-lesson__art-light-image">
-                <img src={illustrationLightUrl} alt="" />
+        <div className="eh-course__row">
+          <div className="eh-course__info">
+            <div className="eh-course__details t-caption-default">
+              <span className="eh-course__detail">
+                <Icon name="calendar" size={12} color="var(--eh-hero-icon)" />
+                {course.deadline}
               </span>
-              <span className="eh-lesson__tint eh-lesson__tint--lines" />
-              <span className="eh-lesson__tint eh-lesson__tint--sparks" />
-              <span className="eh-lesson__tint eh-lesson__tint--cursor" />
-            </span>
-            {/* Dark theme (Figma 239:7998): the drawing as a mask, coloured by tokens */}
+              <img className="eh-course__dot" src={dotUrl} width={4} height={4} alt="" />
+              <span className="eh-course__detail">
+                <Icon name="clock" size={12} color="var(--eh-hero-icon)" />
+                {course.duration}
+              </span>
+            </div>
+
+            <div className="eh-course__name">
+              <h2 className="eh-course__title">{course.title}</h2>
+              <p className="eh-course__description t-caption-default">{course.description}</p>
+              <button type="button" className="eh-course__more t-caption-default">
+                Подробнее
+                <Icon name="chevron-down" size={16} color="currentColor" />
+              </button>
+              <div className="eh-course__rewards">
+                <Tag kind="xp" value={course.xp} />
+                <Tag kind="coins" value={course.coins} />
+              </div>
+            </div>
+          </div>
+
+          <div className="eh-lesson">
             <span
-              className="eh-lesson__lines"
-              style={{ '--eh-mask': `url("${illustrationMaskUrl}")` } as React.CSSProperties}
+              className="eh-lesson__icon"
+              aria-hidden="true"
+              style={{ '--eh-lesson-icon': `url("${phishingIconUrl}")` } as React.CSSProperties}
             />
-            <span className="eh-lesson__sparks">
-              <span
-                className="eh-lesson__sparks-fill"
-                style={{ '--eh-mask': `url("${illustrationMaskUrl}")` } as React.CSSProperties}
-              />
-            </span>
+            <div className="eh-lesson__title">
+              <p className="eh-lesson__overline t-label-small">{course.lesson.label}</p>
+              <h3 className="eh-lesson__heading">{course.lesson.title}</h3>
+            </div>
+            <Button fullWidth onClick={onStartLesson}>
+              Начать урок
+            </Button>
           </div>
-          <div className="eh-lesson__title">
-            <p className="eh-lesson__overline t-label-small">{course.lesson.label}</p>
-            <h3 className="eh-lesson__heading t-heading-h4">{course.lesson.title}</h3>
-          </div>
-          <Button fullWidth onClick={onStartLesson}>
-            Начать урок
-          </Button>
         </div>
       </article>
 

@@ -25,12 +25,6 @@
     0 2px 2px var(--color-shadow-subtle);
   --eh-lesson-lift: 4px;
 
-  /* Lesson illustration (dark only; light uses the tinted image) */
-  --eh-illustration-lines: var(--cobalt-200);
-  --eh-illustration-accent: var(--cobalt-400);
-  --eh-illustration-light: block;
-  --eh-illustration-dark: none;
-
   position: relative;
   display: flex;
   flex-direction: column;
@@ -46,16 +40,14 @@
   --eh-stack-1-border: transparent;
   --eh-stack-2: #202854;
 
-  /* Lesson card shadow: raw colours in Figma 239:7996 */
+  /* Lesson card shadow: raw colours in Figma (desktop 285:8647 — black; tablet and
+     mobile 301:9142 / 301:9261 — deep blue, see the media queries below) */
   --eh-lesson-shadow:
-    0 4px 4px rgba(0, 23, 74, 0.3),
-    0 20px 15px rgba(0, 23, 74, 0.6);
+    0 4px 4px rgba(0, 0, 0, 0.2),
+    0 20px 15px rgba(0, 0, 0, 0.4);
   --eh-lesson-shadow-raised:
-    0 8px 12px rgba(0, 23, 74, 0.3),
-    0 32px 32px rgba(0, 23, 74, 0.6);
-
-  --eh-illustration-light: none;
-  --eh-illustration-dark: block;
+    0 8px 12px rgba(0, 0, 0, 0.2),
+    0 32px 32px rgba(0, 0, 0, 0.4);
 }
 
 /* Theme switch: a short cross-fade (View Transitions API) */
@@ -86,8 +78,9 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-  /* Content starts 110px below the header (90px in the mockup + 20px). */
-  padding-top: calc(90px + var(--space-20));
+  /* Desktop mockup: the content block is centred in the free area, which puts it
+     100px below the header at 1920 × 1074 */
+  padding-top: 100px;
   padding-bottom: var(--space-140);
 }
 
@@ -95,7 +88,7 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 44px;
+  gap: var(--space-56);
   width: 880px;
 }
 
@@ -110,8 +103,9 @@
 
 .eh-greeting__title {
   width: 736px;
+  max-width: 100%;
   margin: 0;
-  /* Mixed line: script name (56/48) + heading (32/40), as in Figma */
+  /* Mixed line: script name (56/48) + Heading/H1 (40/44), as in Figma */
   font-size: 0;
   line-height: 0;
   color: var(--color-text-primary);
@@ -119,9 +113,10 @@
 
 .eh-greeting__line {
   display: block;
+  font: 700 40px/44px var(--font-heading);
 }
 
-/* Figma lays the mixed first line out at 51px (block height 91 = 51 + 40) */
+/* Figma lays the mixed first line out at 51px (block height 95 = 51 + 44) */
 .eh-greeting__line:first-child {
   height: 51px;
 }
@@ -171,17 +166,15 @@
   }
 }
 
-.eh-greeting__space {
-  font-family: var(--font-heading);
-  font-weight: 700;
-  font-size: 32px;
-  line-height: 40px;
-}
-
 .eh-greeting__lead {
   width: 812px;
+  max-width: 100%;
   margin: 0;
   color: var(--color-text-secondary);
+}
+
+.eh-br-narrow {
+  display: none;
 }
 
 /* ---------- Course hero (card + stack) ---------- */
@@ -193,13 +186,27 @@
   flex-direction: column;
   align-items: center;
   width: 100%;
+
+  /* Stack layers: inset from the card sides, top offset, height relative to the card */
+  --eh-layer-1-left: 24px;
+  --eh-layer-1-top: 14px;
+  --eh-layer-1-height: 100%;
+  --eh-layer-2-left: 48px;
+  --eh-layer-2-top: 24px;
+  --eh-layer-2-height: 100%;
 }
 
+/* Desktop: fixed 445px card, status on top, the info column and the lesson card
+   aligned to the bottom edge (Figma 285:8599) */
 .eh-course__card {
   position: relative;
   z-index: 3;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
   width: 100%;
   height: 445px;
+  padding: var(--space-24) var(--space-40) var(--space-40);
   /* clip (not hidden): the card must never scroll its content, e.g. on focus */
   overflow: clip;
   border-radius: var(--radius-32);
@@ -208,17 +215,21 @@
   color: var(--eh-hero-text);
 }
 
+.eh-course__card > :not(.eh-course__media) {
+  position: relative;
+}
+
 .eh-course__layer {
   position: absolute;
-  height: 445px;
   border-radius: var(--radius-32);
 }
 
 .eh-course__layer--1 {
   z-index: 2;
-  left: 24px;
-  top: 14px;
-  width: 832px;
+  left: var(--eh-layer-1-left);
+  top: var(--eh-layer-1-top);
+  width: calc(100% - 2 * var(--eh-layer-1-left));
+  height: var(--eh-layer-1-height);
   border: var(--stroke-1) solid var(--eh-stack-1-border);
   background: var(--eh-stack-1);
   box-shadow: var(--shadow-stack-1);
@@ -226,9 +237,10 @@
 
 .eh-course__layer--2 {
   z-index: 1;
-  left: 48px;
-  top: 24px;
-  width: 784px;
+  left: var(--eh-layer-2-left);
+  top: var(--eh-layer-2-top);
+  width: calc(100% - 2 * var(--eh-layer-2-left));
+  height: var(--eh-layer-2-height);
   background: var(--eh-stack-2);
   box-shadow: var(--shadow-stack-2);
 }
@@ -246,11 +258,13 @@
   max-width: none;
 }
 
+/* image 13 and the glow are hidden in the desktop mockup */
+.eh-course__image--13,
+.eh-course__glow {
+  display: none;
+}
+
 .eh-course__image--13 {
-  left: -22px;
-  top: -4px;
-  width: 758px;
-  height: 379px;
   object-fit: cover;
 }
 
@@ -275,18 +289,17 @@
   background: var(--color-bg-scrim-soft);
 }
 
-/* The glow box overhangs the card by 200px on every side (clipped by the card),
-   so it can drift without showing an edge. The gradient centre is shifted by the
-   same 200px, so the static picture is exactly the Figma one. */
+/* Glow «bottom-right»: the box overhangs the card by 200px on every side (clipped
+   by the card), so it can drift without showing an edge. */
 .eh-course__glow {
   position: absolute;
   left: -200px;
   top: -200px;
-  width: calc(880px + 400px);
-  height: calc(445px + 400px);
+  width: calc(100% + 400px);
+  height: calc(100% + 400px);
   mix-blend-mode: screen;
   background: radial-gradient(
-    484.05px 400.18px at calc(721.23px + 200px) calc(466.61px + 200px),
+    var(--eh-glow-size) at calc(100% - 200px - var(--eh-glow-right)) calc(100% - 200px - var(--eh-glow-bottom)),
     var(--color-decoration-hero-glow-strong) 0%,
     var(--color-decoration-hero-glow-mid) 55%,
     var(--color-decoration-hero-glow-none) 100%
@@ -295,10 +308,6 @@
 
 /* Status: category tag + lessons count */
 .eh-course__status {
-  position: absolute;
-  left: var(--space-40);
-  right: var(--space-40);
-  top: var(--space-24);
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -307,6 +316,7 @@
 
 .eh-course__meta {
   text-align: right;
+  white-space: nowrap;
 }
 
 .eh-course__category {
@@ -315,6 +325,11 @@
   gap: var(--space-10);
   border-radius: var(--radius-999);
   white-space: nowrap;
+}
+
+/* Desktop: Body/Small emphasis; tablet and mobile: Label/Tag */
+.eh-course__category-label {
+  font: 600 14px/18px var(--font-body);
 }
 
 .eh-course__category-icon {
@@ -338,15 +353,26 @@
   display: block;
 }
 
+/* Info column + lesson card */
+.eh-course__row {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: var(--space-24);
+}
+
+.eh-course__info {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-24);
+  width: 477px;
+}
+
 /* Deadline + duration */
 .eh-course__details {
-  position: absolute;
-  left: var(--space-40);
-  top: 163px;
   display: flex;
   align-items: center;
   gap: var(--space-12);
-  width: 333px;
   white-space: nowrap;
 }
 
@@ -363,20 +389,33 @@
 
 /* Title, description, rewards */
 .eh-course__name {
-  position: absolute;
-  left: var(--space-40);
-  top: 205px;
   display: flex;
   flex-direction: column;
   align-items: flex-start;
   gap: var(--space-12);
-  width: 376px;
 }
 
 .eh-course__title,
 .eh-course__description {
   margin: 0;
   color: var(--eh-hero-text);
+}
+
+/* Heading/H1 on desktop */
+.eh-course__title {
+  font: 700 40px/44px var(--font-heading);
+}
+
+/* «Подробнее» — mobile only (instead of the description) */
+.eh-course__more {
+  display: none;
+  align-items: center;
+  gap: var(--space-8);
+  padding: 0;
+  border: 0;
+  background: none;
+  color: var(--color-text-on-brand);
+  cursor: pointer;
 }
 
 .eh-course__rewards {
@@ -389,15 +428,16 @@
 /* ---------- Lesson card ---------- */
 
 .eh-lesson {
-  position: absolute;
-  right: var(--space-40);
-  top: 65px;
+  position: relative;
   display: flex;
+  flex: none;
   flex-direction: column;
+  align-items: center;
   gap: var(--space-20);
   width: 240px;
   height: 340px;
-  padding: var(--space-20);
+  /* 20px card padding + 12px top padding of the inner column (Figma 285:8648) */
+  padding: calc(var(--space-20) + var(--space-12)) var(--space-20) var(--space-20);
   border-radius: var(--radius-24);
   background: var(--color-bg-surface);
   box-shadow: var(--eh-lesson-shadow);
@@ -420,102 +460,15 @@
   }
 }
 
-.eh-lesson__illustration {
-  position: relative;
+/* «phishing-icon»: the line drawing as a mask, coloured with icon/primary */
+.eh-lesson__icon {
+  display: block;
   flex: none;
-  height: 120px;
-  overflow: hidden;
-  border-radius: var(--radius-12);
-}
-
-/* The laptop drawing is a mask; the colour comes from the token. */
-.eh-lesson__lines,
-.eh-lesson__sparks {
-  display: var(--eh-illustration-dark);
-}
-
-.eh-lesson__lines,
-.eh-lesson__sparks-fill {
-  position: absolute;
-  width: 129px;
-  height: 117px;
-  -webkit-mask: var(--eh-mask) no-repeat 0 0 / 129px 117px;
-  mask: var(--eh-mask) no-repeat 0 0 / 129px 117px;
-}
-
-.eh-lesson__lines {
-  left: 38px;
-  top: 0;
-  background: var(--eh-illustration-lines);
-}
-
-.eh-lesson__sparks {
-  position: absolute;
-  left: 64px;
-  top: 6px;
-  width: 32px;
-  height: 22px;
-  overflow: hidden;
-}
-
-.eh-lesson__sparks-fill {
-  left: -26px;
-  top: -6px;
-  background: var(--eh-illustration-accent);
-}
-
-/* Light: the line-art image (opacity 0.8) with cobalt tints in «lighten» mode.
-   Lighten keeps the white card white and paints the dark lines with the tint. */
-.eh-lesson__art-light {
-  display: var(--eh-illustration-light);
-}
-
-.eh-lesson__art-light-image {
-  position: absolute;
-  left: 33px;
-  top: 5.68px;
   width: 134px;
-  height: 108.649px;
-  overflow: hidden;
-  opacity: 0.8;
-}
-
-.eh-lesson__art-light-image img {
-  position: absolute;
-  left: 0;
-  top: -6.74%;
-  width: 190%;
-  height: 234.83%;
-  max-width: none;
-}
-
-.eh-lesson__tint {
-  position: absolute;
-  mix-blend-mode: lighten;
-}
-
-.eh-lesson__tint--lines {
-  left: 33px;
-  top: 5.68px;
-  width: 134px;
-  height: 108.649px;
-  background: var(--cobalt-900);
-}
-
-.eh-lesson__tint--sparks {
-  left: 71.93px;
-  top: 7.49px;
-  width: 19.919px;
-  height: 15.392px;
-  background: var(--cobalt-500);
-}
-
-.eh-lesson__tint--cursor {
-  left: 113.58px;
-  top: 69.05px;
-  width: 23.541px;
-  height: 19.919px;
-  background: var(--cobalt-500);
+  height: 100px;
+  background: var(--color-icon-primary);
+  -webkit-mask: var(--eh-lesson-icon) no-repeat center / 100% 100%;
+  mask: var(--eh-lesson-icon) no-repeat center / 100% 100%;
 }
 
 .eh-lesson__title {
@@ -524,18 +477,27 @@
   flex-direction: column;
   justify-content: flex-end;
   gap: var(--space-8);
+  width: 100%;
   min-height: 1px;
 }
 
 .eh-lesson__overline {
   margin: 0;
   color: var(--color-text-secondary);
+  letter-spacing: 1px;
   text-transform: uppercase;
+  white-space: nowrap;
 }
 
+/* Heading/H4 (Gilroy SemiBold 18/22) */
 .eh-lesson__heading {
   margin: 0;
+  font: 600 18px/22px var(--font-heading);
   color: var(--color-text-primary);
+}
+
+.eh-lesson .chiron-button {
+  flex: none;
 }
 
 /* ---------- Entrance: course card stack ----------
@@ -585,16 +547,16 @@
 @keyframes eh-stack-layer-1 {
   from {
     top: var(--eh-stack-enter-rise);
-    left: calc(24px - var(--eh-stack-enter-spread));
-    width: calc(832px + 2 * var(--eh-stack-enter-spread));
+    left: calc(var(--eh-layer-1-left) - var(--eh-stack-enter-spread));
+    width: calc(100% - 2 * var(--eh-layer-1-left) + 2 * var(--eh-stack-enter-spread));
   }
 }
 
 @keyframes eh-stack-layer-2 {
   from {
     top: var(--eh-stack-enter-rise);
-    left: calc(48px - var(--eh-stack-enter-spread));
-    width: calc(784px + 2 * var(--eh-stack-enter-spread));
+    left: calc(var(--eh-layer-2-left) - var(--eh-stack-enter-spread));
+    width: calc(100% - 2 * var(--eh-layer-2-left) + 2 * var(--eh-stack-enter-spread));
   }
 }
 
@@ -618,7 +580,7 @@
   --eh-bg-glow-wander: 10.3s;
 }
 
-.eh-course__card--animated-bg .eh-course__image--31,
+.eh-course__card--animated-bg .eh-course__image--31 img,
 .eh-course__card--animated-bg .eh-course__glow {
   animation-timing-function: ease-in-out;
   animation-iteration-count: infinite;
@@ -626,7 +588,7 @@
   will-change: transform;
 }
 
-.eh-course__card--animated-bg .eh-course__image--31 {
+.eh-course__card--animated-bg .eh-course__image--31 img {
   animation-name: eh-bg-drift-31;
   animation-duration: var(--eh-bg-drift-31);
 }
@@ -636,7 +598,7 @@
   animation-duration: var(--eh-bg-glow-wander);
 }
 
-.eh-course__card--animated-bg.is-offscreen .eh-course__image--31,
+.eh-course__card--animated-bg.is-offscreen .eh-course__image--31 img,
 .eh-course__card--animated-bg.is-offscreen .eh-course__glow {
   animation-play-state: paused;
 }
@@ -667,8 +629,249 @@
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .eh-course__card--animated-bg .eh-course__image--31,
+  .eh-course__card--animated-bg .eh-course__image--31 img,
   .eh-course__card--animated-bg .eh-course__glow {
     animation: none;
+  }
+}
+
+/* ---------- Tablet (Figma «Главная · Планшет 768», 301:9059) ---------- */
+
+@media (max-width: 1099px) {
+  .employee-home__header {
+    width: 100%;
+  }
+
+  /* Blobs placed as in the tablet mockup (the artboard is anchored to the left edge) */
+  .employee-home .chiron-backdrop__artboard {
+    left: 0;
+  }
+
+  .employee-home .chiron-blob--sky {
+    left: -54px;
+  }
+
+  .employee-home .chiron-blob--light {
+    left: 118px;
+  }
+
+  .employee-home .chiron-blob--indigo {
+    left: 116px;
+  }
+
+  .employee-home .chiron-blob--halo {
+    left: -111px;
+  }
+
+  .employee-home .chiron-blob--glow {
+    left: -63px;
+  }
+
+  .employee-home__workspace {
+    padding: var(--space-48) var(--space-32) calc(var(--space-40) * 2);
+  }
+
+  .employee-home__main {
+    gap: var(--space-40);
+    width: 100%;
+    max-width: 704px;
+  }
+
+  .eh-br-wide {
+    display: none;
+  }
+
+  .eh-course {
+    --eh-layer-1-top: 24px;
+    --eh-layer-1-height: calc(100% - 12px);
+    --eh-layer-2-top: 34px;
+    --eh-layer-2-height: calc(100% - 12px);
+  }
+
+  .eh-course__card {
+    justify-content: flex-start;
+    gap: var(--space-20);
+    height: auto;
+    padding: var(--space-16) var(--space-32) var(--space-32);
+  }
+
+  .eh-course__image--13 {
+    display: block;
+    left: -17.6px;
+    top: 2px;
+    width: 606px;
+    height: 361px;
+  }
+
+  .eh-course__image--31 {
+    top: -28px;
+    width: calc(100% + 4px);
+    height: 562px;
+  }
+
+  .eh-course__glow {
+    display: block;
+    --eh-glow-size: 387.24px 392.09px;
+    --eh-glow-right: 127.01px;
+    --eh-glow-bottom: -21.17px;
+  }
+
+  .eh-course__category-label {
+    font: 600 11px/14px var(--font-body);
+  }
+
+  .eh-course__info {
+    flex: 1 1 0;
+    gap: var(--space-12);
+    width: auto;
+    min-width: 0;
+  }
+
+  /* Heading/Hero */
+  .eh-course__title {
+    font-size: 32px;
+    line-height: 36px;
+  }
+
+  .eh-lesson {
+    padding-top: calc(var(--space-20) + var(--space-10));
+  }
+
+  /* Tablet and mobile mockups use the deep-blue lesson shadow */
+  .employee-home[data-theme='dark'] {
+    --eh-lesson-shadow:
+      0 4px 4px rgba(0, 23, 74, 0.3),
+      0 20px 15px rgba(0, 23, 74, 0.6);
+    --eh-lesson-shadow-raised:
+      0 8px 12px rgba(0, 23, 74, 0.3),
+      0 32px 32px rgba(0, 23, 74, 0.6);
+  }
+}
+
+/* ---------- Mobile (Figma «Главная · Мобильный 390», 301:9178) ---------- */
+
+@media (max-width: 767px) {
+  .employee-home .chiron-blob--sky {
+    left: -226px;
+  }
+
+  .employee-home .chiron-blob--light {
+    left: -138px;
+  }
+
+  .employee-home .chiron-blob--indigo {
+    left: -140px;
+  }
+
+  .employee-home .chiron-blob--halo {
+    left: -255px;
+  }
+
+  .employee-home .chiron-blob--glow {
+    left: -230px;
+  }
+
+  .employee-home__workspace {
+    padding: var(--space-32) var(--space-16) var(--space-48);
+  }
+
+  .employee-home__main {
+    gap: var(--space-32);
+  }
+
+  /* Greeting at 70%: Fet 39.2/33.6, heading 28/30.8 */
+  .eh-greeting__line {
+    font-size: 28px;
+    line-height: 30.8px;
+  }
+
+  .eh-greeting__line:first-child {
+    height: 35.2px;
+  }
+
+  .eh-greeting__name {
+    font-size: 39.2px;
+    line-height: 33.6px;
+  }
+
+  /* Caption/Medium */
+  .eh-greeting__lead {
+    font: 500 12px/18px var(--font-body);
+  }
+
+  .eh-br-narrow {
+    display: inline;
+  }
+
+  .eh-course {
+    --eh-layer-1-left: 16px;
+    --eh-layer-1-top: 55px;
+    --eh-layer-1-height: calc(100% - 45px);
+    --eh-layer-2-left: 32px;
+    --eh-layer-2-top: 21px;
+    --eh-layer-2-height: calc(100% - 3px);
+  }
+
+  .eh-course__card {
+    padding: var(--space-20);
+  }
+
+  .eh-course__image--13 {
+    left: -10px;
+    top: -60px;
+    width: 322px;
+    height: 352px;
+  }
+
+  .eh-course__image--31 {
+    top: -90px;
+    height: 764px;
+  }
+
+  .eh-course__glow {
+    --eh-glow-size: 196.92px 532.37px;
+    --eh-glow-right: 64.59px;
+    --eh-glow-bottom: -28.75px;
+  }
+
+  /* The lesson card goes first, the course info below it */
+  .eh-course__row {
+    flex-direction: column-reverse;
+    align-items: stretch;
+    gap: var(--space-20);
+  }
+
+  .eh-course__details {
+    padding-top: var(--space-8);
+  }
+
+  /* Heading/H2 */
+  .eh-course__title {
+    font-size: 28px;
+    line-height: 32px;
+  }
+
+  .eh-course__description {
+    display: none;
+  }
+
+  .eh-course__more {
+    display: inline-flex;
+  }
+
+  .eh-lesson {
+    gap: var(--space-16);
+    width: auto;
+    height: auto;
+    padding: var(--space-20);
+  }
+
+  .eh-lesson__title {
+    flex: none;
+    padding-top: var(--space-12);
+  }
+
+  .eh-lesson__overline {
+    white-space: normal;
   }
 }

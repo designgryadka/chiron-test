@@ -138,7 +138,7 @@ export const colorTokens: ColorToken[] = [
   "name": "color/bg/info",
   "cssVar": "--color-bg-info",
   "group": "bg",
-  "light": "teal/50",
+  "light": "#dee8f9",
   "dark": "#1d2d47"
  },
  {
@@ -181,7 +181,7 @@ export const colorTokens: ColorToken[] = [
   "cssVar": "--color-text-primary",
   "group": "text",
   "light": "neutral/950",
-  "dark": "#ffffff"
+  "dark": "#e6e8ee"
  },
  {
   "name": "color/text/secondary",

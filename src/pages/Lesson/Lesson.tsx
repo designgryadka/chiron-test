@@ -24,6 +24,8 @@ export interface LessonPageProps {
   defaultTheme?: ThemeName;
   onThemeChange?: (theme: ThemeName) => void;
   onNavigate?: (id: string) => void;
+  /** «Назад»: back to the employee home page. */
+  onBack?: () => void;
 }
 
 export const lessonToc: TocItem[] = [
@@ -63,7 +65,8 @@ function useLessonScroll(sectionIds: string[]) {
       const progress = max > 0 ? Math.min(1, Math.max(0, y / max)) : 0;
 
       // Written straight to the DOM: these change on every frame.
-      if (progressFill.current) progressFill.current.style.transform = `scaleX(${progress})`;
+      // Width rather than scaleX: the rounded ends and the glow keep their shape.
+      if (progressFill.current) progressFill.current.style.width = `${(progress * 100).toFixed(3)}%`;
       progressBar.current?.setAttribute('aria-valuenow', String(Math.round(progress * 100)));
       if (backdrop.current) {
         backdrop.current.style.opacity = Math.max(0, 1 - y / BACKDROP_FADE_DISTANCE).toFixed(3);
@@ -214,7 +217,7 @@ const articleWidget = {
   title: (
     <>
       Тут название статьи
-      <br />
+      <br className="lp-br-wide" />
       из базы знаний
     </>
   ),
@@ -235,6 +238,7 @@ export function LessonPage({
   defaultTheme,
   onThemeChange,
   onNavigate,
+  onBack,
 }: LessonPageProps) {
   const [theme, setTheme] = usePageTheme(defaultTheme, onThemeChange);
   const sectionIds = React.useMemo(() => lessonToc.map((item) => item.id), []);
@@ -278,6 +282,7 @@ export function LessonPage({
             <Button
               variant="secondary"
               className="lp-back"
+              onClick={onBack}
               leadingIcon={<Icon name="arrow-left" size={16} color="currentColor" />}
             >
               Назад
@@ -288,6 +293,12 @@ export function LessonPage({
                 Модуль 2 · 40 минут
               </span>
               <h2 className="lp-course__title lp-heading-hero">Основы кибербезопасности</h2>
+              {/* Mobile: course and module as breadcrumbs instead of the meta line and title */}
+              <p className="lp-course__crumbs t-caption-default">
+                <span>Основы кибербезопасности</span>
+                <span aria-hidden="true">/</span>
+                <span>Модуль 2</span>
+              </p>
             </div>
             <div className="lp-course__rewards">
               <Tag kind="xp" value={30} />
@@ -640,7 +651,10 @@ export function LessonPage({
             <div className="lp-checklist__bg" aria-hidden="true">
               <img src={heroImage31} alt="" />
             </div>
-            <p className="lp-checklist__title lp-heading-h2">Краткий чек-лист перед открытием письма</p>
+            <p className="lp-checklist__title lp-heading-h2">
+              Краткий чек-лист <br className="lp-br-narrow" />
+              перед открытием письма
+            </p>
             {[
               'Я проверил полный адрес отправителя.',
               'Я ожидал это сообщение или подтвердил его по знакомому каналу.',

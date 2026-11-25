@@ -21,7 +21,7 @@
   --color-bg-hero-overlay: var(--alpha-white-10);
   --color-bg-warning: var(--amber-50);
   --color-bg-danger: var(--red-50);
-  --color-bg-info: var(--teal-50);
+  --color-bg-info: #dee8f9;
   --color-bg-inverse: var(--neutral-975);
   --color-bg-inverse-subtle: var(--neutral-800);
   --color-bg-scrim-soft: var(--alpha-black-10);
@@ -111,7 +111,7 @@
   --color-bg-scrim-soft: var(--alpha-black-20);
   --color-bg-scrim-medium: var(--alpha-black-40);
   --color-bg-scrim-strong: var(--alpha-black-50);
-  --color-text-primary: #ffffff;
+  --color-text-primary: #e6e8ee;
   --color-text-secondary: #a9b0be;
   --color-text-muted: #9aa3b3;
   --color-text-placeholder: #9aa3b3;

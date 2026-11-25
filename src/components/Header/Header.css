@@ -42,11 +42,35 @@
   /* Figma «Chiron/Heading/H1» is now 40/44 (the generated .t-heading-h1 token is still 32/40) */
   font-size: 40px;
   line-height: 44px;
-  /* Figma places the 44px text box 11px from the bar's top edge, i.e. a bit below centre */
   position: relative;
-  top: 3px;
+  /* Desktop (Figma «Главная» 285:8564): the vector wordmark at x 24.32 / y 19.24 */
+  display: flex;
+  top: 0;
+  left: 1px;
   color: var(--color-text-primary);
   text-decoration: none;
+}
+
+.chiron-header__logo-text {
+  display: none;
+}
+
+/* Tablet (Figma «Главная · Планшет 768» 301:9059): the text logo, its 44px box
+   16px below the bar's top edge. Mobile switches back to the wordmark below. */
+@media (min-width: 768px) and (max-width: 1099px) {
+  .chiron-header__logo {
+    display: block;
+    top: 8px;
+    left: 0;
+  }
+
+  .chiron-header__logo-text {
+    display: inline;
+  }
+
+  .chiron-header .chiron-header__wordmark {
+    display: none;
+  }
 }
 
 /* The menu is centred on the bar itself, not between the logo and the profile. */
@@ -238,5 +262,37 @@
 
   .chiron-header__burger-wrap {
     display: flex;
+  }
+}
+
+/* Mobile header (Figma «Урок 6 · Мобильный 390», 301:9860): vector wordmark, 64px bar,
+   avatar before the burger, 16px inner padding, 12px gaps. */
+.chiron-header__wordmark {
+  display: block;
+  width: 89.2575px;
+  height: 22px;
+  background: currentColor;
+  -webkit-mask: var(--chiron-wordmark) no-repeat center / 100% 100%;
+  mask: var(--chiron-wordmark) no-repeat center / 100% 100%;
+}
+
+@media (max-width: 767px) {
+  .chiron-header {
+    height: 64px;
+    padding: 0 var(--space-16);
+  }
+
+  .chiron-header__logo {
+    top: 0;
+    left: 0;
+  }
+
+  .chiron-header__profile {
+    gap: var(--space-12);
+    margin-right: 0;
+  }
+
+  .chiron-header__burger-wrap {
+    order: 2;
   }
 }

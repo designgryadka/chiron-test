@@ -2,6 +2,7 @@ import React from 'react';
 import { Tag } from '../Tag/Tag';
 import { ProfileMenu, type ThemeName } from '../ProfileMenu/ProfileMenu';
 import '../Avatar/Avatar.css';
+import wordmarkUrl from '../../assets/chiron-wordmark.svg';
 import './Header.css';
 
 export interface HeaderNavItem {
@@ -124,8 +125,16 @@ export function Header({
 
   return (
     <header {...rest} className={['chiron-header', className].filter(Boolean).join(' ')}>
-      <a className="chiron-header__logo t-heading-h1" href="#" onClick={(e) => e.preventDefault()}>
-        Chiron
+      <a className="chiron-header__logo t-heading-h1" href="#" aria-label="Chiron" onClick={(e) => e.preventDefault()}>
+        <span className="chiron-header__logo-text" aria-hidden="true">
+          Chiron
+        </span>
+        {/* Mobile (Figma 301:9853): the wordmark vector, tinted with the text colour */}
+        <span
+          className="chiron-header__wordmark"
+          aria-hidden="true"
+          style={{ '--chiron-wordmark': `url("${wordmarkUrl}")` } as React.CSSProperties}
+        />
       </a>
 
       <nav className="chiron-header__nav" aria-label="Основная навигация">
