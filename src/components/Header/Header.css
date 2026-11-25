@@ -39,6 +39,12 @@
 
 .chiron-header__logo {
   justify-self: start;
+  /* Figma «Chiron/Heading/H1» is now 40/44 (the generated .t-heading-h1 token is still 32/40) */
+  font-size: 40px;
+  line-height: 44px;
+  /* Figma places the 44px text box 11px from the bar's top edge, i.e. a bit below centre */
+  position: relative;
+  top: 3px;
   color: var(--color-text-primary);
   text-decoration: none;
 }
@@ -152,5 +158,85 @@
 @media (prefers-reduced-motion: reduce) {
   .chiron-header__menu {
     animation: none;
+  }
+}
+
+/* Burger + section menu: narrow screens only (Figma «Урок 6 · Планшет 768», «Мобильный 390») */
+.chiron-header__burger-wrap {
+  position: relative;
+  display: none;
+}
+
+.chiron-header__burger {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-4);
+  width: 40px;
+  height: 40px;
+  padding: 0;
+  border: var(--stroke-1) solid var(--color-border-default);
+  border-radius: var(--radius-20);
+  background: transparent;
+  color: var(--color-text-primary);
+  cursor: pointer;
+  transition: background-color 0.15s ease-out;
+}
+
+.chiron-header__burger span {
+  display: block;
+  width: 16px;
+  height: 2px;
+  border-radius: 1px;
+  background: currentColor;
+}
+
+.chiron-header__burger:hover,
+.chiron-header__burger[aria-expanded='true'] {
+  background: var(--color-bg-hover);
+}
+
+.chiron-header__burger:focus-visible {
+  outline: var(--stroke-2) solid var(--color-border-focus);
+  outline-offset: 2px;
+}
+
+/* Same panel as the profile menu */
+.chiron-nav-menu {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+  width: 264px;
+  padding: var(--space-8);
+  border: var(--stroke-1) solid var(--color-border-default);
+  border-radius: var(--radius-20);
+  background: var(--color-bg-surface);
+  box-shadow: var(--shadow-raised-l);
+}
+
+.chiron-nav-menu .chiron-nav-item {
+  justify-content: flex-start;
+  width: 100%;
+}
+
+@media (max-width: 1099px) {
+  .chiron-header {
+    grid-template-columns: 1fr auto;
+    min-width: 0;
+  }
+
+  .chiron-header > .chiron-header__nav {
+    display: none;
+  }
+
+  .chiron-header__profile {
+    grid-column: 2;
+    /* In the narrow mockups the avatar sits flush with the bar's outer edge */
+    margin-right: calc(var(--space-12) * -1);
+  }
+
+  .chiron-header__burger-wrap {
+    display: flex;
   }
 }

@@ -12,7 +12,7 @@ const meta = {
   },
   decorators: [(Story) => <div style={{ width: 650 }}><Story /></div>],
   parameters: {
-    docs: { description: { component: 'Figma: Callout / Important. Фон `bg/info`, иконка на `progress/xp`, метка `text/link`.' } },
+    docs: { description: { component: 'Figma: Callout / Important. Тёмная тема: фон `bg/info`, метка `text/link`. Светлая: фон `bg/warning`, метка `text/warning`. Иконка на `progress/xp`.' } },
   },
 } satisfies Meta<typeof Callout>;
 

@@ -82,21 +82,26 @@ export function Header({
   className,
   ...rest
 }: HeaderProps) {
-  const [menuOpen, setMenuOpen] = React.useState(false);
+  // One dropdown at a time: the profile menu or (narrow screens) the section menu.
+  const [openMenu, setOpenMenu] = React.useState<'profile' | 'nav' | null>(null);
+  const menuOpen = openMenu === 'profile';
+  const navOpen = openMenu === 'nav';
   const profileRef = React.useRef<HTMLDivElement>(null);
   const avatarButtonRef = React.useRef<HTMLButtonElement>(null);
+  const burgerRef = React.useRef<HTMLButtonElement>(null);
   const menuId = React.useId();
+  const navMenuId = React.useId();
 
-  // Close on outside click and on Escape (focus goes back to the avatar).
+  // Close on outside click and on Escape (focus goes back to the button that opened it).
   React.useEffect(() => {
-    if (!menuOpen) return;
+    if (!openMenu) return;
     const onPointerDown = (e: PointerEvent) => {
-      if (!profileRef.current?.contains(e.target as Node)) setMenuOpen(false);
+      if (!profileRef.current?.contains(e.target as Node)) setOpenMenu(null);
     };
     const onKeyDown = (e: KeyboardEvent) => {
       if (e.key === 'Escape') {
-        setMenuOpen(false);
-        avatarButtonRef.current?.focus();
+        setOpenMenu(null);
+        (openMenu === 'nav' ? burgerRef : avatarButtonRef).current?.focus();
       }
     };
     document.addEventListener('pointerdown', onPointerDown);
@@ -105,7 +110,7 @@ export function Header({
       document.removeEventListener('pointerdown', onPointerDown);
       document.removeEventListener('keydown', onKeyDown);
     };
-  }, [menuOpen]);
+  }, [openMenu]);
 
   const avatar = user && (
     <span className="chiron-avatar" title={onThemeChange ? undefined : user.name}>
@@ -133,12 +138,47 @@ export function Header({
         })}
       </nav>
 
-      <div className="chiron-header__profile">
+      <div className="chiron-header__profile" ref={profileRef}>
         {xp !== undefined && <Tag kind="xp" value={xp} />}
         {coins !== undefined && <Tag kind="coins" value={coins} />}
+
+        {/* Narrow screens (Figma «Урок 6 · Планшет 768 / Мобильный 390»): the menu moves under a burger. */}
+        <div className="chiron-header__burger-wrap">
+          <button
+            ref={burgerRef}
+            type="button"
+            className="chiron-header__burger"
+            aria-label="Меню разделов"
+            aria-haspopup="menu"
+            aria-expanded={navOpen}
+            aria-controls={navOpen ? navMenuId : undefined}
+            onClick={() => setOpenMenu((current) => (current === 'nav' ? null : 'nav'))}
+          >
+            <span />
+            <span />
+            <span />
+          </button>
+          {navOpen && (
+            <nav id={navMenuId} className="chiron-header__menu chiron-nav-menu" aria-label="Основная навигация">
+              {items.map((item) => (
+                <NavItem
+                  key={item.id}
+                  active={item.id === activeId}
+                  onClick={() => {
+                    setOpenMenu(null);
+                    onNavigate?.(item.id);
+                  }}
+                >
+                  {item.label}
+                </NavItem>
+              ))}
+            </nav>
+          )}
+        </div>
+
         {user && !onThemeChange && avatar}
         {user && onThemeChange && (
-          <div className="chiron-header__account" ref={profileRef}>
+          <div className="chiron-header__account">
             <button
               ref={avatarButtonRef}
               type="button"
@@ -147,7 +187,7 @@ export function Header({
               aria-haspopup="menu"
               aria-expanded={menuOpen}
               aria-controls={menuOpen ? menuId : undefined}
-              onClick={() => setMenuOpen((open) => !open)}
+              onClick={() => setOpenMenu((current) => (current === 'profile' ? null : 'profile'))}
             >
               {avatar}
             </button>

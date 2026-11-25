@@ -22,9 +22,16 @@
   font-family: var(--font-body);
 }
 
+/* Light theme: same tokens, Light mode (Figma variables); patterns from the light
+   lesson mockup (262:7235) — white cards on the canvas get the Card shadow. */
 .lp[data-theme='light'] {
   --lp-success: var(--green-800);
   --lp-danger: var(--red-600);
+  --lp-surface-shadow: var(--shadow-card);
+}
+
+.lp[data-theme='dark'] {
+  --lp-surface-shadow: none;
 }
 
 .lp p {
@@ -576,6 +583,7 @@
   padding: var(--space-16);
   border-radius: var(--radius-12);
   background: var(--color-bg-surface);
+  box-shadow: var(--lp-surface-shadow);
 }
 
 .lp-mail__field {
@@ -620,6 +628,12 @@
   color: var(--color-text-secondary);
 }
 
+/* The letter text keeps the 610px measure of the mockups on wider cards */
+.lp-mail__text > p,
+.lp-mail__sign {
+  max-width: 610px;
+}
+
 /* Row cards: link check, key takeaways */
 .lp-row-card {
   display: flex;
@@ -641,7 +655,7 @@
 .lp-address__url {
   font: 500 14px/20px var(--font-body);
   letter-spacing: 1px;
-  word-break: break-all;
+  overflow-wrap: anywhere; /* long URLs wrap, preferably after a hyphen */
 }
 
 .lp-address__url.is-ok {
@@ -775,6 +789,7 @@
   padding: var(--space-20);
   border-radius: var(--radius-16);
   background: var(--color-bg-surface);
+  box-shadow: var(--lp-surface-shadow);
   overflow: hidden;
 }
 
@@ -808,9 +823,180 @@
   color: var(--color-text-secondary);
 }
 
+/* The same widget in the text flow (Figma: tablet and mobile) */
+.lp-aside--inline {
+  position: static;
+  display: none;
+  width: auto;
+}
+
 @media (max-width: 1600px) {
-  .lp-aside {
+  .lp-aside--side {
     display: none;
+  }
+
+  .lp-aside--inline {
+    display: flex;
+  }
+}
+
+/* ---------- Tablet: one column (Figma «Урок 6 · Планшет 768», 301:9293) ---------- */
+
+@media (max-width: 1231px) {
+  .lp {
+    min-width: 0;
+  }
+
+  .lp__header {
+    width: 100%;
+  }
+
+  /* The backdrop keeps the blob positions of the narrow mockups */
+  .lp .chiron-backdrop__artboard {
+    left: -473px;
+  }
+
+  .lp__workspace {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-32);
+    align-items: stretch;
+    width: auto;
+    max-width: 768px;
+    margin: var(--space-32) auto 0;
+    padding: 0 var(--space-32) calc(var(--space-40) * 2);
+  }
+
+  .lp-nav {
+    position: static;
+  }
+
+  /* The lesson contents is hidden in the narrow mockups */
+  .lp-nav .chiron-toc {
+    display: none;
+  }
+
+  .lp-course__title {
+    width: auto;
+    max-width: 384px;
+  }
+
+  .lp-lesson {
+    gap: var(--space-48);
+    padding: 0;
+  }
+
+  .lp-lesson > * {
+    width: auto;
+  }
+
+  .lp-lesson .lp-illustration {
+    width: 100%;
+  }
+
+  .lp-checklist__bg {
+    top: -194px;
+    width: 938px;
+    height: 622px;
+  }
+}
+
+/* ---------- Mobile (Figma «Урок 6 · Мобильный 390», 301:9853) ---------- */
+
+@media (max-width: 767px) {
+  .lp {
+    --lp-sticky-top: calc(var(--lp-header-offset) + var(--space-24));
+  }
+
+  .lp .chiron-backdrop__artboard {
+    left: -573px;
+  }
+
+  .lp__workspace {
+    gap: var(--space-24);
+    margin-top: var(--space-24);
+    padding: 0 var(--space-16) var(--space-64);
+  }
+
+  .lp-lesson {
+    gap: var(--space-40);
+  }
+
+  /* Headings one step smaller: H1 → H2, H2 → H3, H3 → H4 */
+  .lp-heading-h1 {
+    font-size: 28px;
+    line-height: 32px;
+  }
+
+  .lp-heading-h2 {
+    font-size: 24px;
+    line-height: 28px;
+  }
+
+  .lp-heading-h3 {
+    font: 500 18px/22px var(--font-heading);
+    letter-spacing: 1px;
+  }
+
+  /* Tiles become a list: icon on the left */
+  .lp-tiles {
+    flex-direction: column;
+    align-items: stretch;
+    gap: var(--space-16);
+  }
+
+  .lp-tile {
+    flex-direction: row;
+    align-items: center;
+    width: auto;
+  }
+
+  .lp-tile .lp-icon-box {
+    align-self: center;
+  }
+
+  .lp-tile p {
+    flex: 1 1 0;
+    min-width: 0;
+  }
+
+  .lp-scheme {
+    justify-content: flex-start;
+    white-space: normal;
+  }
+
+  /* Sender details: label above the value */
+  .lp-sender__row {
+    flex-direction: column;
+    gap: var(--space-2);
+  }
+
+  .lp-mail__button {
+    align-self: stretch;
+  }
+
+  .lp-checklist__title {
+    padding-right: 0;
+  }
+
+  .lp-checklist__bg {
+    top: -17.28px;
+    width: 592px;
+    height: 714px;
+  }
+
+  .lp-done {
+    padding: 0;
+  }
+
+  .lp-pager {
+    flex-direction: column;
+    align-items: stretch;
+    gap: var(--space-12);
+  }
+
+  .lp .lp-pager__prev {
+    width: 100%;
   }
 }
 

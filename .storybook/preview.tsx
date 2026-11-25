@@ -48,6 +48,13 @@ const preview: Preview = {
   parameters: {
     layout: 'centered',
     backgrounds: { disabled: true },
+    viewport: {
+      options: {
+        desktop1920: { name: 'Desktop 1920', styles: { width: '1920px', height: '1080px' }, type: 'desktop' },
+        tablet768: { name: 'Планшет 768', styles: { width: '768px', height: '1024px' }, type: 'tablet' },
+        mobile390: { name: 'Мобильный 390', styles: { width: '390px', height: '844px' }, type: 'mobile' },
+      },
+    },
     controls: { matchers: { color: /(background|color)$/i } },
     options: {
       storySort: {

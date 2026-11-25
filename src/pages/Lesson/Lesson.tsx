@@ -176,6 +176,7 @@ function SideWidget({
   title,
   kind,
   offset = 0,
+  inline = false,
 }: {
   label: string;
   icon: IconName;
@@ -183,9 +184,15 @@ function SideWidget({
   kind: string;
   /** Distance from the section top, px (as placed in Figma). */
   offset?: number;
+  /** In the text flow (narrower screens) instead of the column to the right of the text. */
+  inline?: boolean;
 }) {
   return (
-    <aside className="lp-aside" aria-label={label} style={{ top: offset }}>
+    <aside
+      className={['lp-aside', inline ? 'lp-aside--inline' : 'lp-aside--side'].join(' ')}
+      aria-label={label}
+      style={inline ? undefined : { top: offset }}
+    >
       <p className="lp-aside__label t-overline">{label}</p>
       <div className="lp-aside__row">
         <span className="lp-aside__icon">
@@ -199,6 +206,27 @@ function SideWidget({
     </aside>
   );
 }
+
+/* Side widgets: to the right of the text on wide screens, in the text flow below 1600px. */
+const articleWidget = {
+  label: 'Дополнительно',
+  icon: 'news',
+  title: (
+    <>
+      Тут название статьи
+      <br />
+      из базы знаний
+    </>
+  ),
+  kind: 'Статья',
+} as const;
+
+const checklistWidget = {
+  label: 'Памятка',
+  icon: 'checklist',
+  title: 'Чек-лист перед открытием письма',
+  kind: 'Краткая памятка',
+} as const;
 
 /* ---------- Page ---------- */
 
@@ -344,21 +372,11 @@ export function LessonPage({
             </Callout>
           </section>
 
+          <SideWidget {...articleWidget} inline />
+
           {/* 2 */}
           <section className="lp-sec" id="s2">
-            <SideWidget
-              label="Дополнительно"
-              icon="news"
-              title={
-                <>
-                  Тут название статьи
-                  <br />
-                  из базы знаний
-                </>
-              }
-              kind="Статья"
-              offset={4}
-            />
+            <SideWidget {...articleWidget} offset={4} />
             <h2 className="lp-heading-h2">Почему фишинговые письма работают?</h2>
             <p className="lp-body-lead">
               Современные фишинговые сообщения бывают практически неотличимы от настоящих. Злоумышленники копируют
@@ -474,8 +492,8 @@ export function LessonPage({
                 </div>
                 <div className="lp-mail__text">
                   <p className="lp-body-lead">
-                    «Обнаружена подозрительная активность. Через 30 минут доступ к корпоративной почте будет
-                    ограничен».
+                    «Обнаружена подозрительная активность. Через 30 минут доступ
+                    <br />к корпоративной почте будет ограничен».
                   </p>
                   <span className="lp-mail__button t-caption-default">Подтвердить учётную запись</span>
                   <p className="t-caption-default">
@@ -515,13 +533,7 @@ export function LessonPage({
 
           {/* 5 */}
           <section className="lp-sec" id="s5">
-            <SideWidget
-              label="Памятка"
-              icon="checklist"
-              title="Чек-лист перед открытием письма"
-              kind="Краткая памятка"
-              offset={19}
-            />
+            <SideWidget {...checklistWidget} offset={19} />
             <h2 className="lp-heading-h2">Что делать, если вы получили подозрительное письмо?</h2>
             <p className="lp-body-lead">
               Представьте, что письмо пришло от человека, которого вы знаете. Имя выглядит правильно, стиль общения
@@ -560,6 +572,8 @@ export function LessonPage({
               код подтверждения, немедленно уведомите службу безопасности и следуйте её процедуре защиты аккаунта.
             </Callout>
           </section>
+
+          <SideWidget {...checklistWidget} inline />
 
           {/* 6 */}
           <section className="lp-sec" id="s6">
@@ -658,7 +672,7 @@ export function LessonPage({
                 'Сообщайте. При обнаружении потенциальной угрозы обращайтесь к ответственным специалистам.',
               ].map((text) => (
                 <div key={text} className="lp-row-card">
-                  <Icon name="checkmark" size={24} color="var(--color-icon-brand)" />
+                  <Icon name="checkmark" size={24} color="var(--lp-success)" />
                   <p className="lp-body-lead">{text}</p>
                 </div>
               ))}
