@@ -26,6 +26,8 @@ export interface LessonPageProps {
   onNavigate?: (id: string) => void;
   /** «Назад»: back to the employee home page. */
   onBack?: () => void;
+  /** Logo click: the employee home page (falls back to `onBack`). */
+  onHome?: () => void;
 }
 
 export const lessonToc: TocItem[] = [
@@ -239,6 +241,7 @@ export function LessonPage({
   onThemeChange,
   onNavigate,
   onBack,
+  onHome = onBack,
 }: LessonPageProps) {
   const [theme, setTheme] = usePageTheme(defaultTheme, onThemeChange);
   const sectionIds = React.useMemo(() => lessonToc.map((item) => item.id), []);
@@ -272,6 +275,7 @@ export function LessonPage({
           user={user}
           theme={theme}
           onThemeChange={setTheme}
+          onLogoClick={onHome}
         />
       </div>
 

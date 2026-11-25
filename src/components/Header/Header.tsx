@@ -29,6 +29,8 @@ export interface HeaderProps extends Omit<React.HTMLAttributes<HTMLElement>, 'on
   theme?: ThemeName;
   /** If set, the avatar opens the profile menu with the theme switch. */
   onThemeChange?: (theme: ThemeName) => void;
+  /** Logo click: go to the employee home page. */
+  onLogoClick?: () => void;
 }
 
 export const defaultNavItems: HeaderNavItem[] = [
@@ -80,6 +82,7 @@ export function Header({
   coins,
   theme = 'light',
   onThemeChange,
+  onLogoClick,
   className,
   ...rest
 }: HeaderProps) {
@@ -125,7 +128,15 @@ export function Header({
 
   return (
     <header {...rest} className={['chiron-header', className].filter(Boolean).join(' ')}>
-      <a className="chiron-header__logo t-heading-h1" href="#" aria-label="Chiron" onClick={(e) => e.preventDefault()}>
+      <a
+        className="chiron-header__logo t-heading-h1"
+        href="#"
+        aria-label="Chiron — на главную"
+        onClick={(e) => {
+          e.preventDefault();
+          onLogoClick?.();
+        }}
+      >
         <span className="chiron-header__logo-text" aria-hidden="true">
           Chiron
         </span>

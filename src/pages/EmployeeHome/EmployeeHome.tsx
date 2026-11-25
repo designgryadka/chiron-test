@@ -47,6 +47,8 @@ export interface EmployeeHomeProps {
   defaultTheme?: ThemeName;
   /** Called when the user switches the theme in the profile menu. */
   onThemeChange?: (theme: ThemeName) => void;
+  /** Logo click. Default: this is already the home page, so it scrolls to the top. */
+  onLogoClick?: () => void;
 }
 
 export const defaultCourse: CourseHero = {
@@ -76,6 +78,7 @@ export function EmployeeHome({
   animatedBackground = true,
   defaultTheme,
   onThemeChange,
+  onLogoClick,
 }: EmployeeHomeProps) {
   const [theme, setTheme] = usePageTheme(defaultTheme, onThemeChange);
 
@@ -102,6 +105,14 @@ export function EmployeeHome({
           user={user}
           theme={theme}
           onThemeChange={setTheme}
+          onLogoClick={
+            onLogoClick ??
+            (() =>
+              window.scrollTo({
+                top: 0,
+                behavior: window.matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth',
+              }))
+          }
         />
       </div>
 
